@@ -79,18 +79,15 @@
 
 
 
-<meta name="description" content="NPM 使用介绍npmjs.org/doc NPM是随同NodeJS一起安装的包管理工具，能解决NodeJS代码部署上的很多问题，常见的使用场景有以下几种：  允许用户从NPM服务器下载别人编写的第三方包到本地使用。 允许用户从NPM服务器下载并安装别人编写的命令行程序到本地使用。 允许用户将自己编写的包或命令行程序上传到NPM服务器供别人使用。  如果你安装的是旧版本的 npm，可以很容易得通过">
 <meta name="keywords" content="nodejs">
 <meta property="og:type" content="website">
-<meta property="og:title" content="npm">
-<meta property="og:url" content="http://yoursite.com/docs/nodejs/npm.html">
+<meta property="og:title" content="electron">
+<meta property="og:url" content="http://yoursite.com/docs/nodejs/electron/electron.html">
 <meta property="og:site_name" content="issac">
-<meta property="og:description" content="NPM 使用介绍npmjs.org/doc NPM是随同NodeJS一起安装的包管理工具，能解决NodeJS代码部署上的很多问题，常见的使用场景有以下几种：  允许用户从NPM服务器下载别人编写的第三方包到本地使用。 允许用户从NPM服务器下载并安装别人编写的命令行程序到本地使用。 允许用户将自己编写的包或命令行程序上传到NPM服务器供别人使用。  如果你安装的是旧版本的 npm，可以很容易得通过">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-08T01:30:45.279Z">
+<meta property="og:updated_time" content="2019-10-07T09:25:32.685Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="npm">
-<meta name="twitter:description" content="NPM 使用介绍npmjs.org/doc NPM是随同NodeJS一起安装的包管理工具，能解决NodeJS代码部署上的很多问题，常见的使用场景有以下几种：  允许用户从NPM服务器下载别人编写的第三方包到本地使用。 允许用户从NPM服务器下载并安装别人编写的命令行程序到本地使用。 允许用户将自己编写的包或命令行程序上传到NPM服务器供别人使用。  如果你安装的是旧版本的 npm，可以很容易得通过">
+<meta name="twitter:title" content="electron">
 
 
 
@@ -120,13 +117,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/docs/nodejs/npm.html">
+  <link rel="canonical" href="http://yoursite.com/docs/nodejs/electron/electron.html">
 
 
 
 
 
-  <title>npm | issac</title>
+  <title>electron | issac</title>
   
 
 
@@ -276,7 +273,7 @@
     <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">npm</h1>
+	<h1 class="post-title" itemprop="name headline">electron</h1>
 
 
 
@@ -288,50 +285,7 @@
       <div class="post-body">
         
         
-          <h1 id="NPM-使用介绍"><a href="#NPM-使用介绍" class="headerlink" title="NPM 使用介绍"></a>NPM 使用介绍</h1><p><a href="npmjs.org/doc">npmjs.org/doc</a></p>
-<p>NPM是随同NodeJS一起安装的包管理工具，能解决NodeJS代码部署上的很多问题，常见的使用场景有以下几种：</p>
-<ul>
-<li>允许用户从NPM服务器下载别人编写的第三方包到本地使用。</li>
-<li>允许用户从NPM服务器下载并安装别人编写的命令行程序到本地使用。</li>
-<li>允许用户将自己编写的包或命令行程序上传到NPM服务器供别人使用。</li>
-</ul>
-<p>如果你安装的是旧版本的 npm，可以很容易得通过 npm 命令来升级: </p>
-<blockquote>
-<p>npm 升级 更新</p>
-</blockquote>
-<blockquote>
-</blockquote>
-<pre><code>npm install npm -g</code></pre><blockquote>
-<p>使用淘宝镜像的命令：<br>    npm install -g cnpm –registry=<a href="https://registry.npm.taobao.org" target="_blank" rel="noopener">https://registry.npm.taobao.org</a></p>
-</blockquote>
-<h2 id="创建模块"><a href="#创建模块" class="headerlink" title="创建模块"></a>创建模块</h2><p>创建模块，package.json 文件是必不可少的。我们可以使用 NPM 生成 package.json 文件，生成的文件包含了基本的结果。</p>
-<pre><code>npm init</code></pre><h2 id="发布模块"><a href="#发布模块" class="headerlink" title="发布模块"></a>发布模块</h2><pre><code>npm publish</code></pre><h2 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h2><p>使用NPM下载和发布代码时都会接触到版本号。NPM使用语义版本号来管理代码，</p>
-<p>语义版本号分为X.Y.Z三位，分别代表主版本号、次版本号和补丁版本号。当代码变更时，版本号按以下原则更新。</p>
-<ul>
-<li>如果只是修复bug，需要更新Z位。</li>
-<li>如果是新增了功能，但是向下兼容，需要更新Y位。</li>
-<li>如果有大变动，向下不兼容，需要更新X位。</li>
-</ul>
-<h2 id="查看一个包的版本信息"><a href="#查看一个包的版本信息" class="headerlink" title="查看一个包的版本信息"></a>查看一个包的版本信息</h2><p>查看npm服务器上所有的jquery版本信息</p>
-<pre><code>npm view jquery versions
-npm info jquery</code></pre><p>查看jquery的最新的版本是哪一个</p>
-<pre><code>npm view jquery version</code></pre><p>使用以下命令来查看所有全局安装的模块：</p>
-<pre><code>npm list -g jquery
-npm ls jquery</code></pre><p>查看某个模块的版本号，可以使用命令如下：</p>
-<pre><code>npm list express</code></pre><h2 id="卸载模块"><a href="#卸载模块" class="headerlink" title="卸载模块"></a>卸载模块</h2><p>用以下命令来卸载 Node.js 模块</p>
-<pre><code>npm uninstall express</code></pre><h2 id="更新模块"><a href="#更新模块" class="headerlink" title="更新模块"></a>更新模块</h2><pre><code>npm update express
-// 将模块升级到指定版本
-npm update express@1.0.1
-// 安装最新版模块
-npm update express@latest</code></pre><h2 id="搜索模块"><a href="#搜索模块" class="headerlink" title="搜索模块"></a>搜索模块</h2><pre><code>npm search express</code></pre><h2 id="npm-代理"><a href="#npm-代理" class="headerlink" title="npm 代理"></a>npm 代理</h2><p>设置代理:</p>
-<pre><code>npm config set registry=http://registry.npmjs.org/</code></pre><p>代理出现了问题，删除之:</p>
-<pre><code>npm config rm proxy 
-npm config rm https-proxy</code></pre><h1 id="npm-如何设置全局安装的默认目录"><a href="#npm-如何设置全局安装的默认目录" class="headerlink" title="npm 如何设置全局安装的默认目录"></a>npm 如何设置全局安装的默认目录</h1><pre><code>npm config set prefix &quot;/home/ubuntu/sdk/node/node_global&quot;
-npm config set cache &quot;/home/ubuntu/sdk/node/node_cache&quot;</code></pre><p>mac 默认:</p>
-<p>npm:</p>
-<pre><code>prefix = &quot;/Users/issac/.npm-global&quot;
-cache = &quot;/Users/issac/.npm&quot;</code></pre><p>tnpm:</p>
-<pre><code>cache = &quot;/Users/issac/.tnpm&quot;</code></pre>
+          
         
       </div>
       
@@ -373,17 +327,8 @@ cache = &quot;/Users/issac/.npm&quot;</code></pre><p>tnpm:</p>
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -455,22 +400,6 @@ cache = &quot;/Users/issac/.npm&quot;</code></pre><p>tnpm:</p>
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NPM-使用介绍"><span class="nav-number">1.</span> <span class="nav-text">NPM 使用介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建模块"><span class="nav-number">1.1.</span> <span class="nav-text">创建模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布模块"><span class="nav-number">1.2.</span> <span class="nav-text">发布模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本号"><span class="nav-number">1.3.</span> <span class="nav-text">版本号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看一个包的版本信息"><span class="nav-number">1.4.</span> <span class="nav-text">查看一个包的版本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载模块"><span class="nav-number">1.5.</span> <span class="nav-text">卸载模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新模块"><span class="nav-number">1.6.</span> <span class="nav-text">更新模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索模块"><span class="nav-number">1.7.</span> <span class="nav-text">搜索模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#npm-代理"><span class="nav-number">1.8.</span> <span class="nav-text">npm 代理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#npm-如何设置全局安装的默认目录"><span class="nav-number">2.</span> <span class="nav-text">npm 如何设置全局安装的默认目录</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
