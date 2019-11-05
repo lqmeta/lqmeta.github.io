@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/docs/os/mac/img1.png">
 <meta property="og:image" content="http://yoursite.com/images/docs/os/mac/img2.png">
-<meta property="og:updated_time" content="2019-10-19T02:40:41.747Z">
+<meta property="og:updated_time" content="2019-10-19T02:55:33.907Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mac">
 <meta name="twitter:description" content="快捷命令显示全路径的命令： Finder内置了「显示路径栏」的功能, 并配置了快捷键(Option+Cmd+P).  打开“终端”，输入以下两条命令： defaults write com.apple.finder _FXShowPosixPathInTitle -bool TRUE;killall Finder恢复默认状态状态显示命令 defaults delete com.apple.find">
@@ -300,7 +300,9 @@
 chmod +x build.sh</code></pre><h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><pre><code>vim ~/.bash_profile</code></pre><p>eg:<br>    1 export PATH=/Users/issac/Documents/software/flutter/bin:$PATH<br>    2 export PATH=/Users/issac/.npm-global/bin:$PATH<br>    3<br>    4 export ANDROID_HOME=/Users/issac/Library/Android/sdk<br>    5 export PATH=${PATH}:${ANDROID_HOME}/tools<br>    6 export PATH=${PATH}:${ANDROID_HOME}/platform-tools<br>    7<br>    8 #export PATH=/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH</p>
 <p>重启 profile</p>
 <pre><code>source ~/.bash_profile</code></pre><h2 id="MAC-命令行解压-rar-文件"><a href="#MAC-命令行解压-rar-文件" class="headerlink" title="MAC 命令行解压 rar 文件"></a>MAC 命令行解压 rar 文件</h2><h3 id="使用Homebrew安装unrar"><a href="#使用Homebrew安装unrar" class="headerlink" title="使用Homebrew安装unrar"></a>使用Homebrew安装unrar</h3><pre><code>brew install unrar</code></pre><h3 id="cd到rar文件的目录下，然后在终端输入下列命令："><a href="#cd到rar文件的目录下，然后在终端输入下列命令：" class="headerlink" title="cd到rar文件的目录下，然后在终端输入下列命令："></a>cd到rar文件的目录下，然后在终端输入下列命令：</h3><pre><code>unrar x 需解压的文件目录</code></pre><h2 id="解压7z格式文件"><a href="#解压7z格式文件" class="headerlink" title="解压7z格式文件"></a>解压7z格式文件</h2><pre><code>brew search 7z
-7z e filename.7z</code></pre><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="Mac终端-sudo-command-not-found-解决方法"><a href="#Mac终端-sudo-command-not-found-解决方法" class="headerlink" title="Mac终端 sudo:command not found 解决方法"></a>Mac终端 sudo:command not found 解决方法</h3><p>首先输入命令，让暂时可以使用vim等命令</p>
+7z e filename.7z</code></pre><p>使用免费软件 The Unarchiver</p>
+<p><a href="https://theunarchiver.com/" target="_blank" rel="noopener">https://theunarchiver.com</a></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="Mac终端-sudo-command-not-found-解决方法"><a href="#Mac终端-sudo-command-not-found-解决方法" class="headerlink" title="Mac终端 sudo:command not found 解决方法"></a>Mac终端 sudo:command not found 解决方法</h3><p>首先输入命令，让暂时可以使用vim等命令</p>
 <pre><code>export PATH=/usr/bin:/usr/sbin:/bin:/sbin:/usr/X11R6/bin</code></pre><p>然后打开<code>~/.bash_profile</code></p>
 <pre><code>vim ~/.bash_profile</code></pre><p>重启profile</p>
 <pre><code>source ~/.bash_profile</code></pre><h1 id="mac-挂载移动硬盘"><a href="#mac-挂载移动硬盘" class="headerlink" title="mac 挂载移动硬盘"></a>mac 挂载移动硬盘</h1><pre><code>diskutil list</code></pre><p><img src="/images/docs/os/mac/img1.png" alt></p>
@@ -476,7 +478,7 @@ du -sh *</code></pre><p>不断去找出暂用存储容量大的文件夹。</p>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">issac</span>
+  <span class="author" itemprop="copyrightHolder">粤ICP备19105205号-1</span>
 
   
 </div>
