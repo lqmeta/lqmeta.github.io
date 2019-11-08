@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="issac">
 <meta property="og:description" content="Java基础为什么Java应用最广泛？从互联网到企业平台，Java是应用最广泛的编程语言，原因在于：  Java是基于JVM虚拟机的跨平台语言，一次编写，到处运行； Java程序易于编写，而且有内置垃圾收集，不必考虑内存管理； Java虚拟机拥有工业级的稳定性和高度优化的性能，且经过了长时期的考验； Java拥有最广泛的开源社区支持，各种高质量组件随时可用。  Java语言常年霸占着三大市场： 互">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-01T07:07:51.320Z">
+<meta property="og:updated_time" content="2019-11-06T12:14:03.894Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java基础">
 <meta name="twitter:description" content="Java基础为什么Java应用最广泛？从互联网到企业平台，Java是应用最广泛的编程语言，原因在于：  Java是基于JVM虚拟机的跨平台语言，一次编写，到处运行； Java程序易于编写，而且有内置垃圾收集，不必考虑内存管理； Java虚拟机拥有工业级的稳定性和高度优化的性能，且经过了长时期的考验； Java拥有最广泛的开源社区支持，各种高质量组件随时可用。  Java语言常年霸占着三大市场： 互">
@@ -824,7 +824,252 @@ hong ──&gt;│Person instance   │  │
 <p>例如：模块java.base对应的文件就是java.base.jmod。</p>
 <p>模块之间的依赖关系已经被写入到模块内的module-info.class文件了。所有的模块都直接或间接地依赖java.base模块，只有java.base模块不依赖任何模块，它可以被看作是“根模块”，好比所有的类都是从Object直接或间接继承而来。</p>
 <p>把一堆class封装为jar仅仅是一个打包的过程，而把一堆class封装为模块则不但需要打包，还需要写入依赖关系，并且还可以包含二进制代码（通常是JNI扩展）。此外，模块支持多版本，即在同一个模块中可以为不同的JVM提供不同的版本。</p>
+<h1 id="Java核心类"><a href="#Java核心类" class="headerlink" title="Java核心类"></a>Java核心类</h1><p>Java的核心类，包括：</p>
+<ul>
+<li>字符串</li>
+<li>StringBuilder</li>
+<li>StringJoiner</li>
+<li>包装类型</li>
+<li>JavaBean</li>
+<li>枚举</li>
+<li>常用工具类</li>
+</ul>
+<h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><p>在Java中，String是一个引用类型，它本身也是一个class。</p>
+<p>但是，Java编译器对String有特殊处理，即可以直接用”…”来表示一个字符串：</p>
+<pre><code>String s1 = &quot;Hello!&quot;;</code></pre><p>实际上字符串在String内部是通过一个char[]数组表示的，因此，按下面的写法也是可以的：</p>
+<pre><code>String s2 = new String(new char[] {&apos;H&apos;, &apos;e&apos;, &apos;l&apos;, &apos;l&apos;, &apos;o&apos;, &apos;!&apos;});</code></pre><h3 id="字符串比较"><a href="#字符串比较" class="headerlink" title="字符串比较"></a>字符串比较</h3><p>当我们想要比较两个字符串是否相同时，要特别注意，我们实际上是想比较字符串的内容是否相同。必须使用<code>equals()</code>方法而不能用<code>==</code>。</p>
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><p>Java字符串String是不可变对象；</p>
+<p>字符串操作不改变原字符串内容，而是返回新字符串；</p>
+<p>常用的字符串操作：提取子串、查找、替换、大小写转换等；</p>
+<p>Java使用Unicode编码表示String和char；</p>
+<p>转换编码就是将String和byte[]转换，需要指定编码；</p>
+<p>转换为byte[]时，始终优先考虑UTF-8编码。</p>
+<h2 id="StringBuilder"><a href="#StringBuilder" class="headerlink" title="StringBuilder"></a>StringBuilder</h2><p>Java编译器对String做了特殊处理，使得我们可以直接用+拼接字符串。</p>
+<p>考察下面的循环代码：</p>
+<pre><code>String s = &quot;&quot;;
+for (int i = 0; i &lt; 1000; i++) {
+    s = s + &quot;,&quot; + i;
+}</code></pre><p>虽然可以直接拼接字符串，但是，在循环中，每次循环都会创建新的字符串对象，然后扔掉旧的字符串。这样，绝大部分字符串都是临时对象，不但浪费内存，还会影响GC效率。</p>
+<p>为了能高效拼接字符串，Java标准库提供了StringBuilder，它是一个可变对象，可以预分配缓冲区，这样，往StringBuilder中新增字符时，不会创建新的临时对象：</p>
+<pre><code>StringBuilder sb = new StringBuilder(1024);
+for (int i = 0; i &lt; 1000; i++) {
+    sb.append(&apos;,&apos;);
+    sb.append(i);
+}
+String s = sb.toString();</code></pre><blockquote>
+<p>注意：对于普通的字符串+操作，并不需要我们将其改写为StringBuilder，因为Java编译器在编译时就自动把多个连续的+操作编码为StringConcatFactory的操作。在运行期，StringConcatFactory会自动把字符串连接操作优化为数组复制或者StringBuilder操作。</p>
+</blockquote>
+<h2 id="StringJoiner"><a href="#StringJoiner" class="headerlink" title="StringJoiner"></a>StringJoiner</h2><h2 id="包装类型"><a href="#包装类型" class="headerlink" title="包装类型"></a>包装类型</h2><p>Java的数据类型分两种：</p>
+<ul>
+<li><p>基本类型：byte，short，int，long，boolean，float，double，char</p>
+</li>
+<li><p>引用类型：所有class和interface类型</p>
+</li>
+</ul>
+<p>实际上，因为包装类型非常有用，Java核心库为每种基本类型都提供了对应的包装类型：</p>
+<table>
+<thead>
+<tr>
+<th>基本类型</th>
+<th>对应的引用类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>java.lang.Boolean</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>java.lang.Byte</td>
+</tr>
+<tr>
+<td>short</td>
+<td>java.lang.Short</td>
+</tr>
+<tr>
+<td>int</td>
+<td>java.lang.Integer</td>
+</tr>
+<tr>
+<td>long</td>
+<td>java.lang.Long</td>
+</tr>
+<tr>
+<td>float</td>
+<td>java.lang.Float</td>
+</tr>
+<tr>
+<td>double</td>
+<td>java.lang.Double</td>
+</tr>
+<tr>
+<td>char</td>
+<td>java.lang.Character</td>
+</tr>
+</tbody></table>
+<h3 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h3><p>Java核心库提供的包装类型可以把基本类型包装为class；</p>
+<p>自动装箱和自动拆箱都是在编译期完成的（JDK&gt;=1.5）；</p>
+<p>装箱和拆箱会影响执行效率，且拆箱时可能发生NullPointerException；</p>
+<p>包装类型的比较必须使用equals()；</p>
+<p>整数和浮点数的包装类型都继承自Number；</p>
+<p>包装类型提供了大量实用方法。</p>
+<h2 id="JavaBean"><a href="#JavaBean" class="headerlink" title="JavaBean"></a>JavaBean</h2><p>JavaBean主要用来传递数据，即把一组数据组合成一个JavaBean便于传输。此外，JavaBean可以方便地被IDE工具分析，生成读写属性的代码，主要用在图形界面的可视化设计中。</p>
+<h3 id="小结-3"><a href="#小结-3" class="headerlink" title="小结"></a>小结</h3><p>JavaBean是一种符合命名规范的class，它通过getter和setter来定义属性；</p>
+<p>属性是一种通用的叫法，并非Java语法规定；</p>
+<p>可以利用IDE快速生成getter和setter；</p>
+<p>使用Introspector.getBeanInfo()可以获取属性列表。</p>
+<h2 id="枚举类"><a href="#枚举类" class="headerlink" title="枚举类"></a>枚举类</h2><h2 id="BigInteger"><a href="#BigInteger" class="headerlink" title="BigInteger"></a>BigInteger</h2><p>在Java中，由CPU原生提供的整型最大范围是64位long型整数。使用long型整数可以直接通过CPU指令进行计算，速度非常快。</p>
+<p>如果我们使用的整数范围超过了long型怎么办？这个时候，就只能用软件来模拟一个大整数。</p>
+<p><code>java.math.BigInteger</code>就是用来表示任意大小的整数。</p>
+<p>BigInteger内部用一个int[]数组来模拟一个非常大的整数：</p>
+<pre><code>BigInteger bi = new BigInteger(&quot;1234567890&quot;);
+System.out.println(bi.pow(5)); // 2867971860299718107233761438093672048294900000</code></pre><p>和long型整数运算比，BigInteger不会有范围限制，但缺点是速度比较慢。</p>
+<h2 id="BigDecimal"><a href="#BigDecimal" class="headerlink" title="BigDecimal"></a>BigDecimal</h2><p>和BigInteger类似，BigDecimal可以表示一个任意大小且精度完全准确的浮点数。</p>
+<p>对BigDecimal做加、减、乘时，精度不会丢失，但是做除法时，存在无法除尽的情况，这时，就必须指定精度以及如何进行截断：</p>
+<pre><code>BigDecimal d1 = new BigDecimal(&quot;123.456&quot;);
+BigDecimal d2 = new BigDecimal(&quot;23.456789&quot;);
+BigDecimal d3 = d1.divide(d2, 10, RoundingMode.HALF_UP); // 保留10位小数并四舍五入</code></pre><h3 id="小结-4"><a href="#小结-4" class="headerlink" title="小结"></a>小结</h3><p>BigDecimal用于表示精确的小数，常用于财务计算；</p>
+<p>比较BigDecimal的值是否相等，必须使用compareTo()而不能使用equals()。</p>
+<h2 id="常用工具类"><a href="#常用工具类" class="headerlink" title="常用工具类"></a>常用工具类</h2><p>Java的核心库提供了大量的现成的类供我们使用。本节我们介绍几个常用的工具类。</p>
+<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>顾名思义，Math类就是用来进行数学计算的，它提供了大量的静态方法来便于我们实现数学计算</p>
+<p>SecureRandom的安全性是通过操作系统提供的安全的随机种子来生成随机数。这个种子是通过CPU的热噪声、读写磁盘的字节、网络流量等各种随机事件产生的“熵”。</p>
+<p>在密码学中，安全的随机数非常重要。如果使用不安全的伪随机数，所有加密体系都将被攻破。因此，时刻牢记必须使用SecureRandom来产生安全的随机数。</p>
+<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><h2 id="Java的异常"><a href="#Java的异常" class="headerlink" title="Java的异常"></a>Java的异常</h2><p>ava内置了一套异常处理机制，总是使用异常来表示错误。</p>
+<p>异常是一种class，因此它本身带有类型信息。异常可以在任何地方抛出，但只需要在上层捕获，这样就和方法调用分离了：</p>
+<pre><code>try {
+    String s = processFile(“C:\\test.txt”);
+    // ok:
+} catch (FileNotFoundException e) {
+    // file not found:
+} catch (SecurityException e) {
+    // no read permission:
+} catch (IOException e) {
+    // io error:
+} catch (Exception e) {
+    // other error:
+}</code></pre><h1 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h1><p>反射就是Reflection，Java的反射是指程序在运行期可以拿到一个对象的所有信息。</p>
+<p>反射是为了解决在运行期，对某个实例一无所知的情况下，如何调用其方法。</p>
+<h1 id="加密与安全"><a href="#加密与安全" class="headerlink" title="加密与安全"></a>加密与安全</h1><p>应对潜在的安全威胁，需要做到三防：</p>
+<ul>
+<li>防窃听</li>
+<li>防篡改</li>
+<li>防伪造</li>
+</ul>
+<p>计算机加密技术就是为了实现上述目标，而现代计算机密码学理论是建立在严格的数学理论基础上的，密码学已经逐渐发展成一门科学。</p>
+<p>对于绝大多数开发者来说，设计一个安全的加密算法非常困难，验证一个加密算法是否安全更加困难，当前被认为安全的加密算法仅仅是迄今为止尚未被攻破。</p>
+<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><p>多线程是Java最基本的一种并发模型，本章我们将详细介绍Java多线程编程。</p>
+<p>现代操作系统（Windows，macOS，Linux）都可以执行多任务。多任务就是同时运行多个任务.</p>
+<p>CPU执行代码都是一条一条顺序执行的，但是，即使是单核cpu，也可以同时运行多个任务。</p>
+<p>因为操作系统执行多任务实际上就是让CPU对多个任务轮流交替执行。</p>
+<p>操作系统轮流让多个任务交替执行，例如，让浏览器执行0.001秒，让QQ执行0.001秒，再让音乐播放器执行0.001秒，在人看来，CPU就是在同时执行多个任务。</p>
+<p>即使是多核CPU，因为通常任务的数量远远多于CPU的核数，所以任务也是交替执行的。</p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>在计算机中，我们把一个任务称为一个进程，浏览器就是一个进程，视频播放器是另一个进程，类似的，音乐播放器和Word都是进程。</p>
+<p>某些进程内部还需要同时执行多个子任务。例如，我们在使用Word时，Word可以让我们一边打字，一边进行拼写检查，同时还可以在后台进行打印，我们把子任务称为线程。</p>
+<p>进程和线程的关系就是：一个进程可以包含一个或多个线程，但至少会有一个线程。</p>
+<pre><code>                        ┌──────────┐
+                        │Process   │
+                        │┌────────┐│
+            ┌──────────┐││ Thread ││┌──────────┐
+            │Process   ││└────────┘││Process   │
+            │┌────────┐││┌────────┐││┌────────┐│
+┌──────────┐││ Thread ││││ Thread ││││ Thread ││
+│Process   ││└────────┘││└────────┘││└────────┘│
+│┌────────┐││┌────────┐││┌────────┐││┌────────┐│
+││ Thread ││││ Thread ││││ Thread ││││ Thread ││
+│└────────┘││└────────┘││└────────┘││└────────┘│
+└──────────┘└──────────┘└──────────┘└──────────┘
+┌──────────────────────────────────────────────┐
+│               Operating System               │
+└──────────────────────────────────────────────┘</code></pre><p>操作系统调度的最小任务单位其实不是进程，而是线程。</p>
+<p>常用的Windows、Linux等操作系统都采用抢占式多任务，如何调度线程完全由操作系统决定，程序自己不能决定什么时候执行，以及执行多长时间。</p>
+<p>因为同一个应用程序，既可以有多个进程，也可以有多个线程，因此，实现多任务的方法，有以下几种：</p>
+<p>1、多进程模式（每个进程只有一个线程）：</p>
+<pre><code>┌──────────┐ ┌──────────┐ ┌──────────┐
+│Process   │ │Process   │ │Process   │
+│┌────────┐│ │┌────────┐│ │┌────────┐│
+││ Thread ││ ││ Thread ││ ││ Thread ││
+│└────────┘│ │└────────┘│ │└────────┘│
+└──────────┘ └──────────┘ └──────────┘</code></pre><p>2、多线程模式（一个进程有多个线程）：</p>
+<pre><code>┌────────────────────┐
+│Process             │
+│┌────────┐┌────────┐│
+││ Thread ││ Thread ││
+│└────────┘└────────┘│
+│┌────────┐┌────────┐│
+││ Thread ││ Thread ││
+│└────────┘└────────┘│
+└────────────────────┘</code></pre><p>3、多进程＋多线程模式（复杂度最高）：</p>
+<pre><code>┌──────────┐┌──────────┐┌──────────┐
+│Process   ││Process   ││Process   │
+│┌────────┐││┌────────┐││┌────────┐│
+││ Thread ││││ Thread ││││ Thread ││
+│└────────┘││└────────┘││└────────┘│
+│┌────────┐││┌────────┐││┌────────┐│
+││ Thread ││││ Thread ││││ Thread ││
+│└────────┘││└────────┘││└────────┘│
+└──────────┘└──────────┘└──────────┘</code></pre><h3 id="进程-vs-线程"><a href="#进程-vs-线程" class="headerlink" title="进程 vs 线程"></a>进程 vs 线程</h3><p>进程和线程是包含关系，但是多任务既可以由多进程实现，也可以由单进程内的多线程实现，还可以混合多进程＋多线程。</p>
+<p>具体采用哪种方式，要考虑到进程和线程的特点。</p>
+<p>和多线程相比，多进程的缺点在于：</p>
+<ul>
+<li>创建进程比创建线程开销大，尤其是在Windows系统上；</li>
+<li>进程间通信比线程间通信要慢，因为线程间通信就是读写同一个变量，速度很快。</li>
+</ul>
+<p>而多进程的优点在于：</p>
+<p>多进程稳定性比多线程高，因为在多进程的情况下，一个进程崩溃不会影响其他进程，而在多线程的情况下，任何一个线程崩溃会直接导致整个进程崩溃。</p>
+<h3 id="多线程-1"><a href="#多线程-1" class="headerlink" title="多线程"></a>多线程</h3><p>Java语言内置了多线程支持：一个Java程序实际上是一个JVM进程，JVM进程用一个主线程来执行main()方法，在main()方法内部，我们又可以启动多个线程。此外，JVM还有负责垃圾回收的其他工作线程等。</p>
+<p>因此，对于大多数Java程序来说，我们说多任务，实际上是说如何使用多线程实现多任务。</p>
+<p>和单线程相比，多线程编程的特点在于：多线程经常需要读写共享数据，并且需要同步。例如，播放电影时，就必须由一个线程播放视频，另一个线程播放音频，两个线程需要协调运行，否则画面和声音就不同步。因此，多线程编程的复杂度高，调试更困难。</p>
+<p>Java多线程编程的特点又在于：</p>
+<ul>
+<li>多线程模型是Java程序最基本的并发模型；</li>
+<li>后续读写网络、数据库、Web开发等都依赖Java多线程模型。</li>
+</ul>
+<p>因此，必须掌握Java多线程编程才能继续深入学习其他内容。</p>
+<h2 id="创建新线程"><a href="#创建新线程" class="headerlink" title="创建新线程"></a>创建新线程</h2><p>Java语言内置了多线程支持。当Java程序启动的时候，实际上是启动了一个JVM进程，然后，JVM启动主线程来执行main()方法。在main()方法中，我们又可以启动其他线程。</p>
+<p>要创建一个新线程非常容易，我们需要实例化一个Thread实例，然后调用它的start()方法：</p>
+<pre><code>public class Main {
+    public static void main(String[] args) {
+        Thread t = new Thread();
+        t.start(); // 启动新线程
+    }
+}</code></pre><p>但是这个线程启动后实际上什么也不做就立刻结束了。</p>
+<p>我们希望新线程能执行指定的代码，有以下几种方法：</p>
+<p>方法一：从Thread派生一个自定义类，然后覆写run()方法：</p>
+<pre><code>public class Main {
+    public static void main(String[] args) {
+        Thread t = new MyThread();
+        t.start(); // 启动新线程
+    }
+}
 
+class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println(&quot;start new thread!&quot;);
+    }
+}</code></pre><p>执行上述代码，注意到start()方法会在内部自动调用实例的run()方法。</p>
+<p>方法二：创建Thread实例时，传入一个Runnable实例：</p>
+<pre><code>public class Main {
+    public static void main(String[] args) {
+        Thread t = new Thread(new MyRunnable());
+        t.start(); // 启动新线程
+    }
+}
+
+class MyRunnable implements Runnable {
+    @Override
+    public void run() {
+        System.out.println(&quot;start new thread!&quot;);
+    }
+}</code></pre><p>或者用Java8引入的lambda语法进一步简写为：</p>
+<pre><code>public class Main {
+    public static void main(String[] args) {
+        Thread t = new Thread(() -&gt; {
+            System.out.println(&quot;start new thread!&quot;);
+        });
+        t.start(); // 启动新线程
+    }
+}</code></pre>
         
       </div>
       
@@ -958,7 +1203,7 @@ hong ──&gt;│Person instance   │  │
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java基础"><span class="nav-number">1.</span> <span class="nav-text">Java基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么Java应用最广泛？"><span class="nav-number">1.1.</span> <span class="nav-text">为什么Java应用最广泛？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java语言常年霸占着三大市场："><span class="nav-number">1.2.</span> <span class="nav-text">Java语言常年霸占着三大市场：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java简介"><span class="nav-number">2.</span> <span class="nav-text">Java简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#面向对象编程-OOP"><span class="nav-number">3.</span> <span class="nav-text">面向对象编程(OOP)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义方法"><span class="nav-number">3.1.</span> <span class="nav-text">定义方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#public"><span class="nav-number">3.1.1.</span> <span class="nav-text">public</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#private"><span class="nav-number">3.1.2.</span> <span class="nav-text">private</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protected"><span class="nav-number">3.1.3.</span> <span class="nav-text">protected</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this"><span class="nav-number">3.1.4.</span> <span class="nav-text">this</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法参数"><span class="nav-number">3.1.5.</span> <span class="nav-text">方法参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变参数"><span class="nav-number">3.1.6.</span> <span class="nav-text">可变参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数绑定-传值-和-引用"><span class="nav-number">3.1.7.</span> <span class="nav-text">参数绑定 - 传值 和 引用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型参数绑定"><span class="nav-number">3.1.7.1.</span> <span class="nav-text">基本类型参数绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引用类型参数绑定"><span class="nav-number">3.1.7.2.</span> <span class="nav-text">引用类型参数绑定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造方法"><span class="nav-number">3.2.</span> <span class="nav-text">构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#默认构造方法"><span class="nav-number">3.2.1.</span> <span class="nav-text">默认构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多构造方法"><span class="nav-number">3.2.2.</span> <span class="nav-text">多构造方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法重载"><span class="nav-number">3.3.</span> <span class="nav-text">方法重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承"><span class="nav-number">3.4.</span> <span class="nav-text">继承</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#继承树"><span class="nav-number">3.4.1.</span> <span class="nav-text">继承树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protected-1"><span class="nav-number">3.4.2.</span> <span class="nav-text">protected</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#super"><span class="nav-number">3.4.3.</span> <span class="nav-text">super</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向上转型"><span class="nav-number">3.4.4.</span> <span class="nav-text">向上转型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向下转型"><span class="nav-number">3.4.5.</span> <span class="nav-text">向下转型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#区分继承和组合"><span class="nav-number">3.4.6.</span> <span class="nav-text">区分继承和组合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">3.4.7.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态"><span class="nav-number">3.5.</span> <span class="nav-text">多态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#覆写Object方法"><span class="nav-number">3.5.1.</span> <span class="nav-text">覆写Object方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用super"><span class="nav-number">3.5.2.</span> <span class="nav-text">调用super</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final"><span class="nav-number">3.5.3.</span> <span class="nav-text">final</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象类-abstract"><span class="nav-number">3.6.</span> <span class="nav-text">抽象类 abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口-interface"><span class="nav-number">3.7.</span> <span class="nav-text">接口 interface</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#接口继承"><span class="nav-number">3.7.1.</span> <span class="nav-text">接口继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承关系"><span class="nav-number">3.7.2.</span> <span class="nav-text">继承关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#default方法"><span class="nav-number">3.7.3.</span> <span class="nav-text">default方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态字段和静态方法"><span class="nav-number">3.8.</span> <span class="nav-text">静态字段和静态方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态字段"><span class="nav-number">3.8.1.</span> <span class="nav-text">静态字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态方法"><span class="nav-number">3.8.2.</span> <span class="nav-text">静态方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口的静态字段"><span class="nav-number">3.8.3.</span> <span class="nav-text">接口的静态字段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包-package"><span class="nav-number">3.9.</span> <span class="nav-text">包 package</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#包作用域"><span class="nav-number">3.9.1.</span> <span class="nav-text">包作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#import"><span class="nav-number">3.9.2.</span> <span class="nav-text">import</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最佳实践"><span class="nav-number">3.9.3.</span> <span class="nav-text">最佳实践</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作用域"><span class="nav-number">3.10.</span> <span class="nav-text">作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#classpath-和-jar"><span class="nav-number">3.11.</span> <span class="nav-text">classpath 和 jar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设定方法"><span class="nav-number">3.11.1.</span> <span class="nav-text">设定方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jar包"><span class="nav-number">3.11.2.</span> <span class="nav-text">jar包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块-Module"><span class="nav-number">3.12.</span> <span class="nav-text">模块 Module</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java基础"><span class="nav-number">1.</span> <span class="nav-text">Java基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么Java应用最广泛？"><span class="nav-number">1.1.</span> <span class="nav-text">为什么Java应用最广泛？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java语言常年霸占着三大市场："><span class="nav-number">1.2.</span> <span class="nav-text">Java语言常年霸占着三大市场：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java简介"><span class="nav-number">2.</span> <span class="nav-text">Java简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#面向对象编程-OOP"><span class="nav-number">3.</span> <span class="nav-text">面向对象编程(OOP)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义方法"><span class="nav-number">3.1.</span> <span class="nav-text">定义方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#public"><span class="nav-number">3.1.1.</span> <span class="nav-text">public</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#private"><span class="nav-number">3.1.2.</span> <span class="nav-text">private</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protected"><span class="nav-number">3.1.3.</span> <span class="nav-text">protected</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this"><span class="nav-number">3.1.4.</span> <span class="nav-text">this</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法参数"><span class="nav-number">3.1.5.</span> <span class="nav-text">方法参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变参数"><span class="nav-number">3.1.6.</span> <span class="nav-text">可变参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数绑定-传值-和-引用"><span class="nav-number">3.1.7.</span> <span class="nav-text">参数绑定 - 传值 和 引用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型参数绑定"><span class="nav-number">3.1.7.1.</span> <span class="nav-text">基本类型参数绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引用类型参数绑定"><span class="nav-number">3.1.7.2.</span> <span class="nav-text">引用类型参数绑定</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造方法"><span class="nav-number">3.2.</span> <span class="nav-text">构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#默认构造方法"><span class="nav-number">3.2.1.</span> <span class="nav-text">默认构造方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多构造方法"><span class="nav-number">3.2.2.</span> <span class="nav-text">多构造方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法重载"><span class="nav-number">3.3.</span> <span class="nav-text">方法重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承"><span class="nav-number">3.4.</span> <span class="nav-text">继承</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#继承树"><span class="nav-number">3.4.1.</span> <span class="nav-text">继承树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#protected-1"><span class="nav-number">3.4.2.</span> <span class="nav-text">protected</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#super"><span class="nav-number">3.4.3.</span> <span class="nav-text">super</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向上转型"><span class="nav-number">3.4.4.</span> <span class="nav-text">向上转型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向下转型"><span class="nav-number">3.4.5.</span> <span class="nav-text">向下转型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#区分继承和组合"><span class="nav-number">3.4.6.</span> <span class="nav-text">区分继承和组合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">3.4.7.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多态"><span class="nav-number">3.5.</span> <span class="nav-text">多态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#覆写Object方法"><span class="nav-number">3.5.1.</span> <span class="nav-text">覆写Object方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用super"><span class="nav-number">3.5.2.</span> <span class="nav-text">调用super</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final"><span class="nav-number">3.5.3.</span> <span class="nav-text">final</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象类-abstract"><span class="nav-number">3.6.</span> <span class="nav-text">抽象类 abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口-interface"><span class="nav-number">3.7.</span> <span class="nav-text">接口 interface</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#接口继承"><span class="nav-number">3.7.1.</span> <span class="nav-text">接口继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承关系"><span class="nav-number">3.7.2.</span> <span class="nav-text">继承关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#default方法"><span class="nav-number">3.7.3.</span> <span class="nav-text">default方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态字段和静态方法"><span class="nav-number">3.8.</span> <span class="nav-text">静态字段和静态方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态字段"><span class="nav-number">3.8.1.</span> <span class="nav-text">静态字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态方法"><span class="nav-number">3.8.2.</span> <span class="nav-text">静态方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口的静态字段"><span class="nav-number">3.8.3.</span> <span class="nav-text">接口的静态字段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包-package"><span class="nav-number">3.9.</span> <span class="nav-text">包 package</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#包作用域"><span class="nav-number">3.9.1.</span> <span class="nav-text">包作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#import"><span class="nav-number">3.9.2.</span> <span class="nav-text">import</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最佳实践"><span class="nav-number">3.9.3.</span> <span class="nav-text">最佳实践</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作用域"><span class="nav-number">3.10.</span> <span class="nav-text">作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#classpath-和-jar"><span class="nav-number">3.11.</span> <span class="nav-text">classpath 和 jar</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设定方法"><span class="nav-number">3.11.1.</span> <span class="nav-text">设定方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jar包"><span class="nav-number">3.11.2.</span> <span class="nav-text">jar包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块-Module"><span class="nav-number">3.12.</span> <span class="nav-text">模块 Module</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java核心类"><span class="nav-number">4.</span> <span class="nav-text">Java核心类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#String"><span class="nav-number">4.1.</span> <span class="nav-text">String</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串比较"><span class="nav-number">4.1.1.</span> <span class="nav-text">字符串比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-1"><span class="nav-number">4.1.2.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StringBuilder"><span class="nav-number">4.2.</span> <span class="nav-text">StringBuilder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StringJoiner"><span class="nav-number">4.3.</span> <span class="nav-text">StringJoiner</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包装类型"><span class="nav-number">4.4.</span> <span class="nav-text">包装类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-2"><span class="nav-number">4.4.1.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaBean"><span class="nav-number">4.5.</span> <span class="nav-text">JavaBean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-3"><span class="nav-number">4.5.1.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举类"><span class="nav-number">4.6.</span> <span class="nav-text">枚举类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BigInteger"><span class="nav-number">4.7.</span> <span class="nav-text">BigInteger</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BigDecimal"><span class="nav-number">4.8.</span> <span class="nav-text">BigDecimal</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-4"><span class="nav-number">4.8.1.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用工具类"><span class="nav-number">4.9.</span> <span class="nav-text">常用工具类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Math"><span class="nav-number">4.9.1.</span> <span class="nav-text">Math</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#异常处理"><span class="nav-number">5.</span> <span class="nav-text">异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java的异常"><span class="nav-number">5.1.</span> <span class="nav-text">Java的异常</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反射"><span class="nav-number">6.</span> <span class="nav-text">反射</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#加密与安全"><span class="nav-number">7.</span> <span class="nav-text">加密与安全</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程"><span class="nav-number">8.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">8.1.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程-vs-线程"><span class="nav-number">8.1.1.</span> <span class="nav-text">进程 vs 线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多线程-1"><span class="nav-number">8.1.2.</span> <span class="nav-text">多线程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建新线程"><span class="nav-number">8.2.</span> <span class="nav-text">创建新线程</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -978,10 +1223,15 @@ hong ──&gt;│Person instance   │  │
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
+        <div class="copyright">
+
+
+
+Copyright
+<span style="position: relative;top: 1px;">&copy; </span>
+
+<span itemprop="copyrightYear">2019 issac 保留所有权利。</span>
+
   <span class="author" itemprop="copyrightHolder">粤ICP备19105205号-1</span>
 
   
