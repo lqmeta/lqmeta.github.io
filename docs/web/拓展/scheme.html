@@ -79,21 +79,18 @@
 
 
 
-<meta name="description" content="快捷命令显示全路径的命令： Finder内置了「显示路径栏」的功能, 并配置了快捷键(Option+Cmd+P).  打开“终端”，输入以下两条命令： defaults write com.apple.finder _FXShowPosixPathInTitle -bool TRUE;killall Finder恢复默认状态状态显示命令 defaults delete com.apple.find">
-<meta name="keywords" content="operating system">
+<meta name="description" content="URL Scheme 使用场景Scheme 用于从浏览器或其他应用中启动本应用。也就是说要从其他应用中跳转本应用的界面或者网页跳转本应用打开特定的界面。 一种App内页面跳转协议，这里的跳转包括应用内跳转、H5与Native跳转，服务器通知客户端如何跳转等。  1.通过小程序，利用Scheme协议打开原生app 2.H5页面点击锚点，根据锚点具体跳转路径APP端跳转具体的页面 3.APP端收到服务">
+<meta name="keywords" content="web前端">
 <meta property="og:type" content="website">
-<meta property="og:title" content="mac">
-<meta property="og:url" content="http://yoursite.com/docs/os/mac/mac.html">
+<meta property="og:title" content="scheme">
+<meta property="og:url" content="http://yoursite.com/docs/web/拓展/scheme.html">
 <meta property="og:site_name" content="issac">
-<meta property="og:description" content="快捷命令显示全路径的命令： Finder内置了「显示路径栏」的功能, 并配置了快捷键(Option+Cmd+P).  打开“终端”，输入以下两条命令： defaults write com.apple.finder _FXShowPosixPathInTitle -bool TRUE;killall Finder恢复默认状态状态显示命令 defaults delete com.apple.find">
+<meta property="og:description" content="URL Scheme 使用场景Scheme 用于从浏览器或其他应用中启动本应用。也就是说要从其他应用中跳转本应用的界面或者网页跳转本应用打开特定的界面。 一种App内页面跳转协议，这里的跳转包括应用内跳转、H5与Native跳转，服务器通知客户端如何跳转等。  1.通过小程序，利用Scheme协议打开原生app 2.H5页面点击锚点，根据锚点具体跳转路径APP端跳转具体的页面 3.APP端收到服务">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/docs/os/mac/img1.png">
-<meta property="og:image" content="http://yoursite.com/images/docs/os/mac/img2.png">
-<meta property="og:updated_time" content="2019-10-19T02:55:33.907Z">
+<meta property="og:updated_time" content="2019-12-10T03:17:22.060Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mac">
-<meta name="twitter:description" content="快捷命令显示全路径的命令： Finder内置了「显示路径栏」的功能, 并配置了快捷键(Option+Cmd+P).  打开“终端”，输入以下两条命令： defaults write com.apple.finder _FXShowPosixPathInTitle -bool TRUE;killall Finder恢复默认状态状态显示命令 defaults delete com.apple.find">
-<meta name="twitter:image" content="http://yoursite.com/images/docs/os/mac/img1.png">
+<meta name="twitter:title" content="scheme">
+<meta name="twitter:description" content="URL Scheme 使用场景Scheme 用于从浏览器或其他应用中启动本应用。也就是说要从其他应用中跳转本应用的界面或者网页跳转本应用打开特定的界面。 一种App内页面跳转协议，这里的跳转包括应用内跳转、H5与Native跳转，服务器通知客户端如何跳转等。  1.通过小程序，利用Scheme协议打开原生app 2.H5页面点击锚点，根据锚点具体跳转路径APP端跳转具体的页面 3.APP端收到服务">
 
 
 
@@ -123,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/docs/os/mac/mac.html">
+  <link rel="canonical" href="http://yoursite.com/docs/web/拓展/scheme.html">
 
 
 
 
 
-  <title>mac | issac</title>
+  <title>scheme | issac</title>
   
 
 
@@ -279,7 +276,7 @@
     <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">mac</h1>
+	<h1 class="post-title" itemprop="name headline">scheme</h1>
 
 
 
@@ -291,35 +288,42 @@
       <div class="post-body">
         
         
-          <h1 id="快捷命令"><a href="#快捷命令" class="headerlink" title="快捷命令"></a>快捷命令</h1><h2 id="显示全路径的命令："><a href="#显示全路径的命令：" class="headerlink" title="显示全路径的命令："></a>显示全路径的命令：</h2><blockquote>
-<p>Finder内置了「显示路径栏」的功能, 并配置了快捷键(Option+Cmd+P).</p>
-</blockquote>
-<p>打开“终端”，输入以下两条命令：</p>
-<pre><code>defaults write com.apple.finder _FXShowPosixPathInTitle -bool TRUE;killall Finder</code></pre><p>恢复默认状态状态显示命令</p>
-<pre><code>defaults delete com.apple.finder _FXShowPosixPathInTitle;killall Finder</code></pre><h2 id="mac系统下赋予-shell-文件可执行权限"><a href="#mac系统下赋予-shell-文件可执行权限" class="headerlink" title="mac系统下赋予 shell 文件可执行权限"></a>mac系统下赋予 shell 文件可执行权限</h2><pre><code>chmod +x file
-chmod +x build.sh</code></pre><h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><pre><code>vim ~/.bash_profile</code></pre><p>eg:<br>    1 export PATH=/Users/issac/Documents/software/flutter/bin:$PATH<br>    2 export PATH=/Users/issac/.npm-global/bin:$PATH<br>    3<br>    4 export ANDROID_HOME=/Users/issac/Library/Android/sdk<br>    5 export PATH=${PATH}:${ANDROID_HOME}/tools<br>    6 export PATH=${PATH}:${ANDROID_HOME}/platform-tools<br>    7<br>    8 #export PATH=/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH</p>
-<p>重启 profile</p>
-<pre><code>source ~/.bash_profile</code></pre><h2 id="MAC-命令行解压-rar-文件"><a href="#MAC-命令行解压-rar-文件" class="headerlink" title="MAC 命令行解压 rar 文件"></a>MAC 命令行解压 rar 文件</h2><h3 id="使用Homebrew安装unrar"><a href="#使用Homebrew安装unrar" class="headerlink" title="使用Homebrew安装unrar"></a>使用Homebrew安装unrar</h3><pre><code>brew install unrar</code></pre><h3 id="cd到rar文件的目录下，然后在终端输入下列命令："><a href="#cd到rar文件的目录下，然后在终端输入下列命令：" class="headerlink" title="cd到rar文件的目录下，然后在终端输入下列命令："></a>cd到rar文件的目录下，然后在终端输入下列命令：</h3><pre><code>unrar x 需解压的文件目录</code></pre><h2 id="解压7z格式文件"><a href="#解压7z格式文件" class="headerlink" title="解压7z格式文件"></a>解压7z格式文件</h2><pre><code>brew search 7z
-7z e filename.7z</code></pre><p>使用免费软件 The Unarchiver</p>
-<p><a href="https://theunarchiver.com/" target="_blank" rel="noopener">https://theunarchiver.com</a></p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="Mac终端-sudo-command-not-found-解决方法"><a href="#Mac终端-sudo-command-not-found-解决方法" class="headerlink" title="Mac终端 sudo:command not found 解决方法"></a>Mac终端 sudo:command not found 解决方法</h3><p>首先输入命令，让暂时可以使用vim等命令</p>
-<pre><code>export PATH=/usr/bin:/usr/sbin:/bin:/sbin:/usr/X11R6/bin</code></pre><p>然后打开<code>~/.bash_profile</code></p>
-<pre><code>vim ~/.bash_profile</code></pre><p>重启profile</p>
-<pre><code>source ~/.bash_profile</code></pre><h1 id="mac-挂载移动硬盘"><a href="#mac-挂载移动硬盘" class="headerlink" title="mac 挂载移动硬盘"></a>mac 挂载移动硬盘</h1><pre><code>diskutil list</code></pre><p><img src="/images/docs/os/mac/img1.png" alt></p>
-<p>卸载硬盘</p>
-<pre><code>sudo umount /dev/disk2s1</code></pre><p>重新挂载分区</p>
-<pre><code>sudo mount_ntfs -o rw,nobrowse /dev/disk2s1 ~/Desktop/md1</code></pre><p>执行完命令后，访问桌面上的 md1 即为访问硬盘分区，现在是可写状态。 </p>
-<h2 id="移动硬盘加密"><a href="#移动硬盘加密" class="headerlink" title="移动硬盘加密"></a>移动硬盘加密</h2><p><a href="https://zhuanlan.zhihu.com/p/66416070" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/66416070</a></p>
-<h1 id="系统清理"><a href="#系统清理" class="headerlink" title="系统清理"></a>系统清理</h1><p>1、清空回收站。</p>
-<p>2、在文稿里，按文件大小排序，删除不需要的文件。</p>
-<p>3、对于GarageBand，这个是系统上的模拟乐器，一般都使用不到。</p>
-<p>清除方法：</p>
-<pre><code>rm -rf /Library/Application\ Support/GarageBand
-rm -rf /Library/Application\ Support/Logic
-rm -rf /Library/Audio/Apple\ Loops</code></pre><p>查看系统的文件占用详情</p>
-<pre><code>du -sh *</code></pre><p><img src="/images/docs/os/mac/img2.png" alt></p>
-<pre><code>cd ~/Library
-du -sh *</code></pre><p>不断去找出暂用存储容量大的文件夹。</p>
+          <h1 id="URL-Scheme-使用场景"><a href="#URL-Scheme-使用场景" class="headerlink" title="URL Scheme 使用场景"></a>URL Scheme 使用场景</h1><p>Scheme 用于从浏览器或其他应用中启动本应用。也就是说要从其他应用中跳转本应用的界面或者网页跳转本应用打开特定的界面。</p>
+<p>一种App内页面跳转协议，这里的跳转包括应用内跳转、H5与Native跳转，服务器通知客户端如何跳转等。</p>
+<ul>
+<li>1.通过小程序，利用Scheme协议打开原生app</li>
+<li>2.H5页面点击锚点，根据锚点具体跳转路径APP端跳转具体的页面</li>
+<li>3.APP端收到服务器端下发的PUSH通知栏消息，根据消息的点击跳转路径跳转相关页面</li>
+<li>4.APP根据URL跳转到另外一个APP指定页面</li>
+<li>5.通过短信息中的url打开原生app</li>
+</ul>
+<p>google提供了一个公共的方式：js与native互调，即js可以调用Native方法，Native同样也可以调用js方法；</p>
+<p>但是这种交互方式存在着不少问题： </p>
+<p>1、Java 调用 js 里面的函数、效率并不是很高、估计要200ms左右吧、做交互性很强的事情、这种速度很难让人接受、而js去调Java的方法、速度很快、50ms左右、所以尽量用js调用Java方法 </p>
+<p>2、Java 调用 js 的函数、没有返回值、调用了就控制不到了</p>
+<p>3、Js 调用 Java 的方法、返回值如果是字符串、你会发现这个字符串是 native 的、转成 locale 的才能正常使用、使用 toLocaleString() 函数就可以了、不过这个函数的速度并不快、转化的字符串如果很多、将会很耗费时间</p>
+<p>4、网页中尽量不要使用jQuery、执行起来需要5-6秒、最好使用原生的js写业务脚本、以提升加载速度、改善用户体验</p>
+<p>5、android4.2以下的系统存在着webview的js对象注入漏洞…（不清楚的可以google）</p>
+<p>基于这种种的原因，我们并未采用这种方式用于Native与webview交互，而是采用scheme + cookie的方式；</p>
+<p>这里的scheme是一种页面内跳转协议，主要用于支持一下几种场景：</p>
+<ul>
+<li>服务器下发跳转路径，客户端根据服务器下发跳转路径跳转相应的页面；</li>
+<li>H5页面点击锚点，根据锚点具体跳转路径App端跳转具体的页面；</li>
+<li>App端收到服务器端下发的PUSH通知栏消息，根据消息的点击跳转路径跳转相关页面</li>
+</ul>
+<h1 id="URL-scheme-概述"><a href="#URL-scheme-概述" class="headerlink" title="URL scheme 概述"></a>URL scheme 概述</h1><h2 id="URL-scheme-的作用"><a href="#URL-scheme-的作用" class="headerlink" title="URL scheme 的作用"></a>URL scheme 的作用</h2><p>客户端应用可以向操作系统注册一个 URL scheme，该 scheme 用于从浏览器或其他应用中启动本应用。通过指定的 URL 字段，可以让应用在被调起后直接打开某些特定页面，比如车辆详情页、订单详情页、消息通知页、促销广告页等等。也可以执行某些指定动作，如订单支付等。也可以在应用内通过 html 页来直接调用显示 app 内的某个页面。</p>
+<h2 id="URL-scheme-的格式"><a href="#URL-scheme-的格式" class="headerlink" title="URL scheme 的格式"></a>URL scheme 的格式</h2><p>客户端自定义的 URL 作为从一个应用调用另一个的基础，遵循 RFC 1808 (Relative Uniform Resource Locators) 标准。这跟我们常见的网页内容 URL 格式一样。</p>
+<p>一个普通的 URL 分为几个部分，scheme、host、relativePath、query。</p>
+<p>比如：<a href="http://www.baidu.com/s?rsv_bp=1&amp;rsv_spt=1&amp;wd=NSurl&amp;inputT=2709，" target="_blank" rel="noopener">http://www.baidu.com/s?rsv_bp=1&amp;rsv_spt=1&amp;wd=NSurl&amp;inputT=2709，</a></p>
+<p>这个URL中，scheme 为 http，host 为 <a href="http://www.baidu.com，relativePath" target="_blank" rel="noopener">www.baidu.com，relativePath</a> 为 /s，query 为 rsv_bp=1&amp;rsv_spt=1&amp;wd=NSurl&amp;inputT=2709。</p>
+<p>一个应用中使用的 URL 例子（该 URL 会调起车辆详情页）：uumobile://mobile/carDetail?car_id=123456，</p>
+<p>其中 scheme 为 uumobile，host 为 mobile，relativePath 为 /carDetail，query 为 car_id=123456。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><p><a href="https://github.com/yipianfengye/androidProject/blob/master/11%20android%E4%BA%A7%E5%93%81%E7%A0%94%E5%8F%91-%E5%BA%94%E7%94%A8%E5%86%85%E8%B7%B3%E8%BD%AC%E5%8D%8F%E8%AE%AEscheme.md" target="_blank" rel="noopener">android产品研发-应用内跳转协议scheme.md</a></p>
+</li>
+<li><p><a href="https://github.com/yangchong211/YCBlogs" target="_blank" rel="noopener"></a></p>
+</li>
+</ul>
 
         
       </div>
@@ -454,7 +458,7 @@ du -sh *</code></pre><p>不断去找出暂用存储容量大的文件夹。</p>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#快捷命令"><span class="nav-number">1.</span> <span class="nav-text">快捷命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#显示全路径的命令："><span class="nav-number">1.1.</span> <span class="nav-text">显示全路径的命令：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mac系统下赋予-shell-文件可执行权限"><span class="nav-number">1.2.</span> <span class="nav-text">mac系统下赋予 shell 文件可执行权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境变量"><span class="nav-number">1.3.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAC-命令行解压-rar-文件"><span class="nav-number">1.4.</span> <span class="nav-text">MAC 命令行解压 rar 文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Homebrew安装unrar"><span class="nav-number">1.4.1.</span> <span class="nav-text">使用Homebrew安装unrar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cd到rar文件的目录下，然后在终端输入下列命令："><span class="nav-number">1.4.2.</span> <span class="nav-text">cd到rar文件的目录下，然后在终端输入下列命令：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压7z格式文件"><span class="nav-number">1.5.</span> <span class="nav-text">解压7z格式文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">1.6.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mac终端-sudo-command-not-found-解决方法"><span class="nav-number">1.6.1.</span> <span class="nav-text">Mac终端 sudo:command not found 解决方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mac-挂载移动硬盘"><span class="nav-number">2.</span> <span class="nav-text">mac 挂载移动硬盘</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#移动硬盘加密"><span class="nav-number">2.1.</span> <span class="nav-text">移动硬盘加密</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统清理"><span class="nav-number">3.</span> <span class="nav-text">系统清理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#URL-Scheme-使用场景"><span class="nav-number">1.</span> <span class="nav-text">URL Scheme 使用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#URL-scheme-概述"><span class="nav-number">2.</span> <span class="nav-text">URL scheme 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#URL-scheme-的作用"><span class="nav-number">2.1.</span> <span class="nav-text">URL scheme 的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URL-scheme-的格式"><span class="nav-number">2.2.</span> <span class="nav-text">URL scheme 的格式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>

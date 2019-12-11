@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="命令常见用法在文件中搜索一个单词，命令会返回一个包含“match_pattern”的文本行： grep match_pattern file_name grep &amp;quot;match_pattern&amp;quot; file_name在多个文件中查找： grep &amp;quot;match_pattern&amp;quot; file_1 file_2 file_3 ...s标记匹配颜色 –color=auto">
+<meta name="description" content="命令常见用法在文件中搜索一个单词，命令会返回一个包含“match_pattern”的文本行： grep match_pattern file_name grep &amp;quot;match_pattern&amp;quot; file_name  grep -C 5 &amp;quot;match_pattern&amp;quot; file            # 显示file文件里匹配foo字串那行以及上下5行 gre">
 <meta name="keywords" content="operating system">
 <meta property="og:type" content="website">
 <meta property="og:title" content="grep">
 <meta property="og:url" content="http://yoursite.com/docs/os/command/grep.html">
 <meta property="og:site_name" content="issac">
-<meta property="og:description" content="命令常见用法在文件中搜索一个单词，命令会返回一个包含“match_pattern”的文本行： grep match_pattern file_name grep &amp;quot;match_pattern&amp;quot; file_name在多个文件中查找： grep &amp;quot;match_pattern&amp;quot; file_1 file_2 file_3 ...s标记匹配颜色 –color=auto">
+<meta property="og:description" content="命令常见用法在文件中搜索一个单词，命令会返回一个包含“match_pattern”的文本行： grep match_pattern file_name grep &amp;quot;match_pattern&amp;quot; file_name  grep -C 5 &amp;quot;match_pattern&amp;quot; file            # 显示file文件里匹配foo字串那行以及上下5行 gre">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-01T07:07:51.323Z">
+<meta property="og:updated_time" content="2019-12-05T12:33:14.827Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="grep">
-<meta name="twitter:description" content="命令常见用法在文件中搜索一个单词，命令会返回一个包含“match_pattern”的文本行： grep match_pattern file_name grep &amp;quot;match_pattern&amp;quot; file_name在多个文件中查找： grep &amp;quot;match_pattern&amp;quot; file_1 file_2 file_3 ...s标记匹配颜色 –color=auto">
+<meta name="twitter:description" content="命令常见用法在文件中搜索一个单词，命令会返回一个包含“match_pattern”的文本行： grep match_pattern file_name grep &amp;quot;match_pattern&amp;quot; file_name  grep -C 5 &amp;quot;match_pattern&amp;quot; file            # 显示file文件里匹配foo字串那行以及上下5行 gre">
 
 
 
@@ -290,7 +290,11 @@
         
           <h1 id="命令常见用法"><a href="#命令常见用法" class="headerlink" title="命令常见用法"></a>命令常见用法</h1><p>在文件中搜索一个单词，命令会返回一个包含“match_pattern”的文本行：</p>
 <pre><code>grep match_pattern file_name
-grep &quot;match_pattern&quot; file_name</code></pre><p>在多个文件中查找：</p>
+grep &quot;match_pattern&quot; file_name
+
+grep -C 5 &quot;match_pattern&quot; file            # 显示file文件里匹配foo字串那行以及上下5行
+grep -B 5 &quot;match_pattern&quot; file            # 显示foo及前5行
+grep -A 5 &quot;match_pattern&quot; file            # 显示foo及后5行</code></pre><p>在多个文件中查找：</p>
 <pre><code>grep &quot;match_pattern&quot; file_1 file_2 file_3 ...s</code></pre><p>标记匹配颜色 –color=auto 选项：</p>
 <pre><code>grep &quot;match_pattern&quot; file_name --color=auto</code></pre><p>使用正则表达式 -E 选项：</p>
 <pre><code>grep -E &quot;[1-9]+&quot;
@@ -390,7 +394,7 @@ grep &quot;main()&quot; . -r --exclude-from filelist</code></pre>
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -401,7 +405,7 @@ grep &quot;main()&quot; . -r --exclude-from filelist</code></pre>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
