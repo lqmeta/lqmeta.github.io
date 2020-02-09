@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="issac">
 <meta property="og:description" content="命令常见用法在文件中搜索一个单词，命令会返回一个包含“match_pattern”的文本行： grep match_pattern file_name grep &amp;quot;match_pattern&amp;quot; file_name  grep -C 5 &amp;quot;match_pattern&amp;quot; file            # 显示file文件里匹配foo字串那行以及上下5行 gre">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-05T12:33:14.827Z">
+<meta property="og:updated_time" content="2020-02-04T13:13:51.477Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="grep">
 <meta name="twitter:description" content="命令常见用法在文件中搜索一个单词，命令会返回一个包含“match_pattern”的文本行： grep match_pattern file_name grep &amp;quot;match_pattern&amp;quot; file_name  grep -C 5 &amp;quot;match_pattern&amp;quot; file            # 显示file文件里匹配foo字串那行以及上下5行 gre">
@@ -314,7 +314,9 @@ grep &quot;main()&quot; . -r --include *.{php,html}
 #在搜索结果中排除所有README文件
 grep &quot;main()&quot; . -r --exclude &quot;README&quot;
 #在搜索结果中排除filelist文件列表里的文件
-grep &quot;main()&quot; . -r --exclude-from filelist</code></pre>
+grep &quot;main()&quot; . -r --exclude-from filelist</code></pre><h1 id="查看文件"><a href="#查看文件" class="headerlink" title="查看文件"></a>查看文件</h1><pre><code>tail -n 20 access.log        # 显示 xxx 最后20行
+tail -n +20 access.log        # 显示 xxx 前面20行
+tail -f access.log        # 循环读取文件</code></pre>
         
       </div>
       
@@ -448,7 +450,7 @@ grep &quot;main()&quot; . -r --exclude-from filelist</code></pre>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#命令常见用法"><span class="nav-number">1.</span> <span class="nav-text">命令常见用法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#递归搜索文件"><span class="nav-number">2.</span> <span class="nav-text">递归搜索文件</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#命令常见用法"><span class="nav-number">1.</span> <span class="nav-text">命令常见用法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#递归搜索文件"><span class="nav-number">2.</span> <span class="nav-text">递归搜索文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看文件"><span class="nav-number">3.</span> <span class="nav-text">查看文件</span></a></li></ol></div>
             
 
           </div>
@@ -475,7 +477,7 @@ grep &quot;main()&quot; . -r --exclude-from filelist</code></pre>
 Copyright
 <span style="position: relative;top: 1px;">&copy; </span>
 
-<span itemprop="copyrightYear">2019 issac 保留所有权利。</span>
+<span itemprop="copyrightYear">2020 issac 保留所有权利。</span>
 
   <span class="author" itemprop="copyrightHolder">
     <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备19105205号-1</a>
