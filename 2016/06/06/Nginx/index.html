@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Nginx | 学习技术分享</title>
+  <meta name="description" content="Nginx 配置 - nginx.confnginx.conf http 模块打印 loglog_format - 用来定义记录日志的格式（可以定义多种日志格式，取不同名字即可）; main 名字access_log - 用来指定日至文件的路径及使用的何种日志格式记录日志; 使用 log_format main 格式 1234567891011121314# log_format - 用来定义记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx">
+<meta property="og:url" content="http://getone.run/2016/06/06/Nginx/index.html">
+<meta property="og:site_name" content="学习技术分享">
+<meta property="og:description" content="Nginx 配置 - nginx.confnginx.conf http 模块打印 loglog_format - 用来定义记录日志的格式（可以定义多种日志格式，取不同名字即可）; main 名字access_log - 用来指定日至文件的路径及使用的何种日志格式记录日志; 使用 log_format main 格式 1234567891011121314# log_format - 用来定义记录">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-06-06T03:21:12.000Z">
+<meta property="article:modified_time" content="2024-03-04T08:50:15.663Z">
+<meta property="article:author" content="lqmeta">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://getone.run/2016/06/06/Nginx/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="学习技术分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/web_others/hexo-docs/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/lqmeta" target="_blank">
+          <img class="img-circle img-rotate" src="/web_others/hexo-docs/images/my/head-sculpture/WechatIMG67.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">lqmeta</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/web_others/hexo-docs/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/web_others/hexo-docs/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/web_others/hexo-docs/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/web_others/hexo-docs/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/web_others/hexo-docs/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/web_others/hexo-docs/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lqmeta" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2517096010" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/web_others/hexo-docs/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Node-js/">Node.js</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Serverless/">Serverless</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Tools/">Tools</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/CentOS/" rel="tag">CentOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/Django/" rel="tag">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/editor/" rel="tag">editor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E5%AE%89%E8%A3%85%E5%8C%85/" rel="tag">安装包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">环境安装</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" rel="tag">镜像</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/web_others/hexo-docs/tags/CentOS/" style="font-size: 13px;">CentOS</a> <a href="/web_others/hexo-docs/tags/Django/" style="font-size: 13px;">Django</a> <a href="/web_others/hexo-docs/tags/Hexo/" style="font-size: 13px;">Hexo</a> <a href="/web_others/hexo-docs/tags/editor/" style="font-size: 13px;">editor</a> <a href="/web_others/hexo-docs/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 13px;">协议</a> <a href="/web_others/hexo-docs/tags/%E5%AE%89%E8%A3%85%E5%8C%85/" style="font-size: 13px;">安装包</a> <a href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 13.5px;">环境安装</a> <a href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 14px;">笔记</a> <a href="/web_others/hexo-docs/tags/%E7%BC%93%E5%AD%98/" style="font-size: 13px;">缓存</a> <a href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" style="font-size: 13px;">镜像</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2022/02/">February 2022</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/09/">September 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/06/">June 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/02/">February 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/01/">January 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/08/">August 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/07/">July 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/03/">March 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2016/01/">January 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/13/hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99%E6%9C%8D%E5%8A%A1%E5%88%B6%E4%BD%9C%E6%88%90%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2/" class="title">hexo个人博客网站服务制作成镜像部署</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-13T07:16:40.000Z" itemprop="datePublished">2022-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/13/Docker-%E5%88%B6%E4%BD%9CNodejs%E9%95%9C%E5%83%8F/" class="title">Docker - 制作Nodejs镜像</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-13T03:01:07.000Z" itemprop="datePublished">2022-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/12/Docker-Compose%E5%AE%89%E8%A3%85/" class="title">Docker Compose安装</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-12T06:34:32.000Z" itemprop="datePublished">2022-02-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a>
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/12/%E5%88%B6%E4%BD%9C-Nginx-1-21-6-%E5%85%8D%E5%AE%89%E8%A3%85%E5%8C%85/" class="title">制作 Nginx-1.21.6 免安装包</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-12T05:58:31.000Z" itemprop="datePublished">2022-02-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/06/VS-Code-Remote-SSH%E9%85%8D%E7%BD%AE/" class="title">VS Code Remote SSH配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-05T17:43:30.000Z" itemprop="datePublished">2022-02-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Nginx-%E9%85%8D%E7%BD%AE-nginx-conf"><span class="toc-number">1.</span> <span class="toc-text">Nginx 配置 - nginx.conf</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#http-%E6%A8%A1%E5%9D%97"><span class="toc-number">1.1.</span> <span class="toc-text">http 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8D%B0-log"><span class="toc-number">1.1.1.</span> <span class="toc-text">打印 log</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E8%A7%84%E5%88%99%E9%87%8D%E5%86%99"><span class="toc-number">2.</span> <span class="toc-text">路由规则重写</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Location%E7%9A%84%E9%85%8D%E7%BD%AE%E8%AF%AD%E6%B3%95%E8%A7%84%E5%88%99"><span class="toc-number">2.1.</span> <span class="toc-text">Location的配置语法规则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx%E7%9A%84-Rewrite-%E8%A7%84%E5%88%99"><span class="toc-number">2.2.</span> <span class="toc-text">Nginx的 Rewrite 规则</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84Nginx%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="toc-number">3.</span> <span class="toc-text">常用的Nginx全局变量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tengine"><span class="toc-number">4.</span> <span class="toc-text">Tengine</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E6%A8%A1%E5%9D%97%E6%B7%BB%E5%8A%A0%E4%BD%BF%E7%94%A8"><span class="toc-number">4.1.</span> <span class="toc-text">新模块添加使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mac-brew"><span class="toc-number">5.</span> <span class="toc-text">mac brew</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Nginx" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nginx
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/web_others/hexo-docs/2016/06/06/Nginx/" class="article-date">
+	  <time datetime="2016-06-06T03:21:12.000Z" itemprop="datePublished">2016-06-06</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/web_others/hexo-docs/2016/06/06/Nginx/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="Nginx-配置-nginx-conf"><a href="#Nginx-配置-nginx-conf" class="headerlink" title="Nginx 配置 - nginx.conf"></a>Nginx 配置 - nginx.conf</h1><p><a href="/assets/nginx/nginx.conf">nginx.conf</a></p>
+<h2 id="http-模块"><a href="#http-模块" class="headerlink" title="http 模块"></a>http 模块</h2><h3 id="打印-log"><a href="#打印-log" class="headerlink" title="打印 log"></a>打印 log</h3><p>log_format - 用来定义记录日志的格式（可以定义多种日志格式，取不同名字即可）; main 名字<br>access_log - 用来指定日至文件的路径及使用的何种日志格式记录日志; 使用 log_format main 格式</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># log<span class="emphasis">_format - 用来定义记录日志的格式（可以定义多种日志格式，取不同名字即可）; main 名字</span></span></span><br><span class="line"><span class="emphasis"><span class="section">log_</span>format  main  &#x27;$remote<span class="emphasis">_addr - $remote_</span>user [$time<span class="emphasis">_local] &quot;$request&quot; &#x27;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">                  &#x27;$status $body_</span>bytes<span class="emphasis">_sent &quot;$http_</span>referer&quot; &#x27;</span></span><br><span class="line"><span class="code">                  &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span></span><br><span class="line"><span class="code"># access_log - 用来指定日至文件的路径及使用的何种日志格式记录日志; 使用 log_format main 格式</span></span><br><span class="line"><span class="code">access_log  logs/access.log  main;</span></span><br><span class="line"><span class="code"></span></span><br><span class="line">-----------------------------------------------</span><br><span class="line"><span class="section"># 增加 &#x27;&quot;$upstream<span class="emphasis">_addr&quot; &quot;$upstream_</span>status&quot; &quot;$upstream<span class="emphasis">_response_</span>time&quot; &quot;$request<span class="emphasis">_time&quot;&#x27;;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">log_</span>format  main  &#x27;$remote<span class="emphasis">_addr - $remote_</span>user [$time<span class="emphasis">_local] &quot;$request&quot; &#x27;</span></span></span><br><span class="line"><span class="emphasis"><span class="section">                  &#x27;$status $body_</span>bytes<span class="emphasis">_sent &quot;$http_</span>referer&quot; &#x27;</span></span><br><span class="line"><span class="code">                  &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;</span></span><br><span class="line"><span class="code">                  &#x27;&quot;$upstream_addr&quot; &quot;$upstream_status&quot; &quot;$upstream_response_time&quot; &quot;$request_time&quot;&#x27;;</span></span><br><span class="line"><span class="code"></span></span><br></pre></td></tr></table></figure>
+
+<p>log_format格式变量：</p>
+<p>    $remote_addr  #记录访问网站的客户端地址<br>    $remote_user  #远程客户端用户名<br>    $time_local  #记录访问时间与时区<br>    $request  #用户的http请求起始行信息<br>    $status  #http状态码，记录请求返回的状态码，例如：200、301、404等<br>    $body_bytes_sent  #服务器发送给客户端的响应body字节数<br>    $http_referer  #记录此次请求是从哪个连接访问过来的，可以根据该参数进行防盗链设置。<br>    $http_user_agent  #记录客户端访问信息，例如：浏览器、手机客户端等<br>    $http_x_forwarded_for  #当前端有代理服务器时，设置web节点记录客户端地址的配置，此参数生效的前提是代理服务器也要进行相关的x_forwarded_for设置</p>
+<p><code>增加 &#39;&quot;$upstream_addr&quot; &quot;$upstream_status&quot; &quot;$upstream_response_time&quot; &quot;$request_time&quot;&#39;;</code></p>
+<pre><code>$upstream_addr  # 后台upstream的地址，即真正提供服务的主机地址 - 保存服务器的IP地址和端口或者是UNIX域套接字的路径。 在请求处理过程中，如果有多台服务器被尝试了，它们的地址会被拼接起来，以逗号隔开，比如： “192.168.1.1:80, 192.168.1.2:80, unix:/tmp/sock”。 如果在服务器之间通过“X-Accel-Redirect”头或者error_page有内部跳转，那么这些服务器组之间会以冒号隔开，比如：“192.168.1.1:80, 192.168.1.2:80, unix:/tmp/sock : 192.168.10.1:80, 192.168.10.2:80”。
+
+$upstream_status  # upstream状态 - 保存服务器的响应代码。 出现多个响应时，也是以逗号和冒号隔开。
+
+$upstream_response_time  # 请求过程中，upstream响应时间 - 以毫秒的精度保留服务器的响应时间，（输出）单位是秒。 出现多个响应时，也是以逗号和冒号隔开。
+
+$request_time  #整个请求的总时间 - 这个字段记录的是nginx 开始收到client 请求，到将请求发回给client 期间过去的时间。
+</code></pre>
+<p>参考资料:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://my.oschina.net/u/2000675/blog/900496">https://my.oschina.net/u/2000675/blog/900496</a></li>
+</ul>
+<h1 id="路由规则重写"><a href="#路由规则重写" class="headerlink" title="路由规则重写"></a>路由规则重写</h1><h2 id="Location的配置语法规则"><a href="#Location的配置语法规则" class="headerlink" title="Location的配置语法规则"></a>Location的配置语法规则</h2><p>语法规则：  location [=|<del>|</del>*|^~] /uri/ {…}</p>
+<p>语法说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">* =   开头表示精确匹配，不支持正则。</span><br><span class="line">* ^~  开头表示uri以某个常规字符串开头，不支持正则，理解为匹配url路径即可。nginx不对url做编码，因此请求为/static/20%/aaa，可以被规则^~ /static/ /aaa匹配到（注意是空格）。</span><br><span class="line">* ~和~* 开头表示区分大小写的和不区分大小写的正则匹配。</span><br><span class="line">* !~和!~* 开头表示区分大小写不匹配及不区分大小写不匹配的正则匹配。</span><br><span class="line">* / 通用匹配，任何请求都会匹配，通常放着配置的最后。</span><br></pre></td></tr></table></figure>
+
+<p>匹配优先级：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(1). 优先尝试 全匹配( 也就是前缀 =)</span><br><span class="line">(2). 尝试 路径匹配 （ 也就是前缀 ^~）</span><br><span class="line">(3). 尝试 正则匹配 （ 也就是前缀 ~* 或者 ~）</span><br><span class="line">(4). 字符串匹配 （也就是前缀为空）</span><br></pre></td></tr></table></figure>
+
+<p>所以，前缀的优先级概括为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">= &gt; ^~ &gt; ~, ~* &gt; 空</span><br></pre></td></tr></table></figure>
+<p>全匹配 &gt; 路径匹配 &gt; 正则匹配 &gt; 字符串匹配</p>
+<h2 id="Nginx的-Rewrite-规则"><a href="#Nginx的-Rewrite-规则" class="headerlink" title="Nginx的 Rewrite 规则"></a>Nginx的 Rewrite 规则</h2><p>语法规则： rewrite 正则 替换 标志位</p>
+<p>rewrite指令的最后一项参数为flag标记，flag标记有：</p>
+<ul>
+<li>1.last   last是终止当前location的rewrite检测,但会继续重试location匹配并处理区块中的rewrite规则。</li>
+<li>2.break  break是终止当前location的rewrite检测,而且不再进行location匹配。</li>
+<li>3.redirect  返回302临时重定向，浏览器地址会显示跳转后的URL地址。</li>
+<li>4.permanent  返回301永久重定向，浏览器地址会显示跳转后的URL地址。</li>
+</ul>
+<pre><code>#这个指令表示，如果/login匹配成功，则直接在home路径中查找demo.html文件
+#然后跳转到demo.html。注意这是内部跳转，浏览器上的地址url不会变，还是以/login结尾。
+location  /login &#123;
+    rewrite  ^/  /demo.html  break;
+    root  home/;
+&#125;
+location /open-platform/sso-chaoxing &#123;
+    rewrite ^/  /open-platform/sso-chaoxing.html  break;
+&#125;
+
+#和break差不多，不过这个表示外部跳转，也会跳转到demo.html页面，不过浏览器地址会自动变成demo.html
+location  /login &#123;
+    rewrite  ^/  /demo.html  redirect;
+    root  home/;
+&#125;
+</code></pre>
+<h1 id="常用的Nginx全局变量"><a href="#常用的Nginx全局变量" class="headerlink" title="常用的Nginx全局变量"></a>常用的Nginx全局变量</h1><pre><code>$args #这个变量等于请求行中的参数。
+$content_length #请求头中的Content-length字段。
+$content_type #请求头中的Content-Type字段。
+$document_root #当前请求在root指令中指定的值。
+$host #请求主机头字段，否则为服务器名称。 
+    http://testweb.wemeet.tencent.com/test-echo
+    $host: testweb.wemeet.tencent.com;
+    $http_host: testweb.wemeet.tencent.com;
+$http_user_agent #客户端agent信息
+$http_cookie #客户端cookie信息
+$limit_rate #这个变量可以限制连接速率。
+$request_body_file #客户端请求主体信息的临时文件名。
+$request_method #客户端请求的动作，通常为GET或POST。
+$remote_addr #客户端的IP地址。
+$remote_port #客户端的端口。
+$remote_user #已经经过Auth Basic Module验证的用户名。
+$request_filename #当前请求的文件路径，由root或alias指令与URI请求生成。
+$query_string #与$args相同。
+$scheme #HTTP方法（如http，https）。
+$server_protocol #请求使用的协议，通常是HTTP/1.0或HTTP/1.1。
+$server_addr #服务器地址，在完成一次系统调用后可以确定这个值。
+$server_name #服务器名称。
+$server_port #请求到达服务器的端口号。
+$request_uri #包含请求参数的原始URI，不包含主机名，如：”/foo/bar.php?arg=baz”。
+$uri #不带请求参数的当前URI，$uri不包含主机名，如”/foo/bar.html”。
+$document_uri #与$uri相同。
+</code></pre>
+<h1 id="Tengine"><a href="#Tengine" class="headerlink" title="Tengine"></a>Tengine</h1><h2 id="新模块添加使用"><a href="#新模块添加使用" class="headerlink" title="新模块添加使用"></a>新模块添加使用</h2><p>1.为nginx添加模块 - 静态的模块</p>
+<p>进入到nginx的源码包中，重新configure加入相应模块</p>
+<pre><code>./configure --add-module=/path/to/module
+</code></pre>
+<p>例如，我下载的一个ngx_http_push模块放到了/usr/local/ngx_modules目录里，该模块的源码目录为ngx_http_push,那么configure指令为</p>
+<pre><code>./configure --add-module=/usr/local/ngx_modules/ngx_http_push
+</code></pre>
+<p>configure 没问题的话那么就直接执行</p>
+<pre><code>make &amp;&amp; make install 
+</code></pre>
+<p>完了以后就可以了,此时模块为静态的模块。</p>
+<p>2.使用Tengine的dso_install</p>
+<h1 id="mac-brew"><a href="#mac-brew" class="headerlink" title="mac brew"></a>mac brew</h1><p><a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080/</a></p>
+<p>重启:</p>
+<pre><code>//检查是否安装nginx及对应的目录
+find /|grep nginx.conf
+
+nginx -t
+brew services restart nginx
+// 启动Nginx
+&lt;!-- service nginx start --&gt;
+// 重启nginx
+&lt;!-- service nginx restart --&gt;
+</code></pre>
+<p>配置文件:</p>
+<pre><code>/usr/local/etc/nginx/nginx.conf
+// html 更目录
+/usr/local/var/www/
+</code></pre>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/25056737">推荐学习Nginx的书</a><!-- * []() --></li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://getone.run/2016/06/06/Nginx/" title="Nginx" target="_blank" rel="external">http://getone.run/2016/06/06/Nginx/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/lqmeta" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/web_others/hexo-docs/images/my/head-sculpture/WechatIMG67.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/lqmeta" target="_blank"><span class="text-dark">lqmeta</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/web_others/hexo-docs/2017/02/16/Django/" title="Django"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/web_others/hexo-docs/2016/01/01/Git/" title="Git"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">    <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/web_others/hexo-docs/images/my/pay/aliPay.jpeg" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/web_others/hexo-docs/images/my/pay/WechatIMG700.jpeg" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lqmeta" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2517096010" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/web_others/hexo-docs/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2024 lqmeta 保留所有权利。
+        
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/lqmeta" target="_blank"> cofess </a>base on <a href="https://github.com/lqmeta/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+        <div>
+            <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2020079004号-1</a>
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/web_others/hexo-docs/js/plugin.min.js"></script>
+
+
+<script src="/web_others/hexo-docs/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/web_others/hexo-docs/',
+        CONTENT_URL: '/web_others/hexo-docs/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/web_others/hexo-docs/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+</body>
+</html>

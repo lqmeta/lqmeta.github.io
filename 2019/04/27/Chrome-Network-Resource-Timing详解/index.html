@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Chrome Network Resource Timing详解 | 学习技术分享</title>
+  <meta name="description" content="Chrome Network Resource Timing Resource SchedulingQueueing排队时间。(请求文件顺序的的排序) 在 http1 下浏览器对每次TCP连接的数量有所限制。比如 Chrome浏览器是限制同一域名下支持同时6个TCP连接。如果请求的资源超过6个并资源优先级比较低，便会进入队列进行排队等待其他连接释放（Queueing 就是这个等待时间: 从添加到待">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chrome Network Resource Timing详解">
+<meta property="og:url" content="http://getone.run/2019/04/27/Chrome-Network-Resource-Timing%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="学习技术分享">
+<meta property="og:description" content="Chrome Network Resource Timing Resource SchedulingQueueing排队时间。(请求文件顺序的的排序) 在 http1 下浏览器对每次TCP连接的数量有所限制。比如 Chrome浏览器是限制同一域名下支持同时6个TCP连接。如果请求的资源超过6个并资源优先级比较低，便会进入队列进行排队等待其他连接释放（Queueing 就是这个等待时间: 从添加到待">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://getone.run/images/docs/web/%E4%BC%98%E5%8C%96/Chrome-Network-Resource-Timing/img-1.png">
+<meta property="og:image" content="http://getone.run/images/docs/web/%E4%BC%98%E5%8C%96/Chrome-Network-Resource-Timing/img-2.png">
+<meta property="article:published_time" content="2019-04-27T04:04:07.000Z">
+<meta property="article:modified_time" content="2024-03-04T08:50:15.661Z">
+<meta property="article:author" content="lqmeta">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://getone.run/images/docs/web/%E4%BC%98%E5%8C%96/Chrome-Network-Resource-Timing/img-1.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://getone.run/2019/04/27/Chrome-Network-Resource-Timing%E8%AF%A6%E8%A7%A3/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="学习技术分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/web_others/hexo-docs/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/lqmeta" target="_blank">
+          <img class="img-circle img-rotate" src="/web_others/hexo-docs/images/my/head-sculpture/WechatIMG67.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">lqmeta</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/web_others/hexo-docs/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/web_others/hexo-docs/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/web_others/hexo-docs/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/web_others/hexo-docs/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/web_others/hexo-docs/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/web_others/hexo-docs/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lqmeta" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2517096010" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/web_others/hexo-docs/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Node-js/">Node.js</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Serverless/">Serverless</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Tools/">Tools</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/CentOS/" rel="tag">CentOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/Django/" rel="tag">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/editor/" rel="tag">editor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E5%AE%89%E8%A3%85%E5%8C%85/" rel="tag">安装包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">环境安装</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" rel="tag">镜像</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/web_others/hexo-docs/tags/CentOS/" style="font-size: 13px;">CentOS</a> <a href="/web_others/hexo-docs/tags/Django/" style="font-size: 13px;">Django</a> <a href="/web_others/hexo-docs/tags/Hexo/" style="font-size: 13px;">Hexo</a> <a href="/web_others/hexo-docs/tags/editor/" style="font-size: 13px;">editor</a> <a href="/web_others/hexo-docs/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 13px;">协议</a> <a href="/web_others/hexo-docs/tags/%E5%AE%89%E8%A3%85%E5%8C%85/" style="font-size: 13px;">安装包</a> <a href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 13.5px;">环境安装</a> <a href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 14px;">笔记</a> <a href="/web_others/hexo-docs/tags/%E7%BC%93%E5%AD%98/" style="font-size: 13px;">缓存</a> <a href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" style="font-size: 13px;">镜像</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2022/02/">February 2022</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/09/">September 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/06/">June 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/02/">February 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/01/">January 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/08/">August 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/07/">July 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/03/">March 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2016/01/">January 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/13/hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99%E6%9C%8D%E5%8A%A1%E5%88%B6%E4%BD%9C%E6%88%90%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2/" class="title">hexo个人博客网站服务制作成镜像部署</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-13T07:16:40.000Z" itemprop="datePublished">2022-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/13/Docker-%E5%88%B6%E4%BD%9CNodejs%E9%95%9C%E5%83%8F/" class="title">Docker - 制作Nodejs镜像</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-13T03:01:07.000Z" itemprop="datePublished">2022-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/12/Docker-Compose%E5%AE%89%E8%A3%85/" class="title">Docker Compose安装</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-12T06:34:32.000Z" itemprop="datePublished">2022-02-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a>
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/12/%E5%88%B6%E4%BD%9C-Nginx-1-21-6-%E5%85%8D%E5%AE%89%E8%A3%85%E5%8C%85/" class="title">制作 Nginx-1.21.6 免安装包</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-12T05:58:31.000Z" itemprop="datePublished">2022-02-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/06/VS-Code-Remote-SSH%E9%85%8D%E7%BD%AE/" class="title">VS Code Remote SSH配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-05T17:43:30.000Z" itemprop="datePublished">2022-02-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Chrome-Network-Resource-Timing"><span class="toc-number">1.</span> <span class="toc-text">Chrome Network Resource Timing</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Resource-Scheduling"><span class="toc-number">1.1.</span> <span class="toc-text">Resource Scheduling</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Queueing"><span class="toc-number">1.1.1.</span> <span class="toc-text">Queueing</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Connection-Start"><span class="toc-number">1.2.</span> <span class="toc-text">Connection Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Stalled"><span class="toc-number">1.2.1.</span> <span class="toc-text">Stalled</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Proxy-Negotiation"><span class="toc-number">1.2.2.</span> <span class="toc-text">Proxy Negotiation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Initial-Connection-Connecting"><span class="toc-number">1.2.3.</span> <span class="toc-text">Initial Connection &#x2F; Connecting</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSL"><span class="toc-number">1.2.4.</span> <span class="toc-text">SSL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Request-Response"><span class="toc-number">1.3.</span> <span class="toc-text">Request &#x2F; Response</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Request-Sent-Sending"><span class="toc-number">1.3.1.</span> <span class="toc-text">Request Sent &#x2F; Sending</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Waiting-TTFB"><span class="toc-number">1.3.2.</span> <span class="toc-text">Waiting (TTFB)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Content-Download-Downloading"><span class="toc-number">1.3.3.</span> <span class="toc-text">Content Download &#x2F; Downloading</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E8%A7%A3%E9%87%8A"><span class="toc-number">2.</span> <span class="toc-text">官方解释</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Chrome-Network-Resource-Timing详解" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Chrome Network Resource Timing详解
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/web_others/hexo-docs/2019/04/27/Chrome-Network-Resource-Timing%E8%AF%A6%E8%A7%A3/" class="article-date">
+	  <time datetime="2019-04-27T04:04:07.000Z" itemprop="datePublished">2019-04-27</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/web_others/hexo-docs/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/web_others/hexo-docs/2019/04/27/Chrome-Network-Resource-Timing%E8%AF%A6%E8%A7%A3/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="Chrome-Network-Resource-Timing"><a href="#Chrome-Network-Resource-Timing" class="headerlink" title="Chrome Network Resource Timing"></a>Chrome Network Resource Timing</h1><p><img src="/images/docs/web/%E4%BC%98%E5%8C%96/Chrome-Network-Resource-Timing/img-1.png"></p>
+<h2 id="Resource-Scheduling"><a href="#Resource-Scheduling" class="headerlink" title="Resource Scheduling"></a>Resource Scheduling</h2><h3 id="Queueing"><a href="#Queueing" class="headerlink" title="Queueing"></a>Queueing</h3><p>排队时间。(请求文件顺序的的排序)</p>
+<p>在 http1 下浏览器对每次TCP连接的数量有所限制。<br>比如 Chrome浏览器是限制同一域名下支持同时6个TCP连接。<br>如果请求的资源超过6个并资源优先级比较低，便会进入队列进行排队等待其他连接释放<br>（Queueing 就是这个等待时间: 从添加到待处理队列，到实际开始处理的时间间隔标示）。</p>
+<p>优化方法:</p>
+<ul>
+<li>合理使用多域名，增加并发连接数量。</li>
+<li>http2支持多路复用，即没有TCP连接数量限制。</li>
+</ul>
+<h2 id="Connection-Start"><a href="#Connection-Start" class="headerlink" title="Connection Start"></a>Connection Start</h2><h3 id="Stalled"><a href="#Stalled" class="headerlink" title="Stalled"></a>Stalled</h3><p>请求允许被发出到请求真正发出的时间间隔。</p>
+<p>也就是浏览器收到一个指令，指令说你可以准备发出请求了，于是浏览器就准备代理协商，如果有已经建好的链接，还会等待可建立的TCP连接被重新复用的时间（不包括DNS查询、TCP建立连接等时间）。</p>
+<p>等这些做完了，请求也就可以发出了。</p>
+<p>Stalled 就是收到这个指令到请求可以发出的时间间隔。</p>
+<p>已建立的TCP连接确认是否可被继续使用需要一个检测过程，这个检测过程的时间会包含在stalled中。<br>如果这个检测返回错误，客户端会连续发送可复用tcp连接继续进行检测，如果持续检测超过最大次数仍然没有连接检测成功、查找到可复用的tcp连接。客户端便认为没有可复用的连接，检测结束。记录时间。（在这之后会发送一个新的TCP请求连接，已不属于stalled时间间隔）</p>
+<p>如果出现stalled阶段过长，可能是丢包所致，说明网络不太好或服务端有问题。</p>
+<p>参考：<a target="_blank" rel="noopener" href="http://fex.baidu.com/blog/2015/01/chrome-stalled-problem-resolving-process/">http://fex.baidu.com/blog/2015/01/chrome-stalled-problem-resolving-process</a></p>
+<h3 id="Proxy-Negotiation"><a href="#Proxy-Negotiation" class="headerlink" title="Proxy Negotiation"></a>Proxy Negotiation</h3><p>与代理服务器连接协商所用的时间。（需要使用代理服务器进行访问的url才会有这个时间）</p>
+<h3 id="Initial-Connection-Connecting"><a href="#Initial-Connection-Connecting" class="headerlink" title="Initial Connection / Connecting"></a>Initial Connection / Connecting</h3><p>建立连接所用时间。</p>
+<p>包括 TCP握手和多次尝试握手、处理SSL的时间。</p>
+<p>TCP建立连接，可能由于网络原因或服务器原因导致丢包，一次握手不成功，于是会出现多次尝试握手情况。</p>
+<p>如果在 stalled阶段成功检测到可复用TCP连接，这个时间同样也会为 0，忽略不计。</p>
+<h3 id="SSL"><a href="#SSL" class="headerlink" title="SSL"></a>SSL</h3><p>完成 SSL 握手所用时间。</p>
+<h2 id="Request-Response"><a href="#Request-Response" class="headerlink" title="Request / Response"></a>Request / Response</h2><h3 id="Request-Sent-Sending"><a href="#Request-Sent-Sending" class="headerlink" title="Request Sent / Sending"></a>Request Sent / Sending</h3><p>请求发出时间。</p>
+<p>将<code>http请求报文</code>第一个字节发出开始到最后一个字节发出结束的时间。</p>
+<p>通常非常小。<br>如果请求报文比较大，这个时间可能会长一点，不过影响不大。</p>
+<h3 id="Waiting-TTFB"><a href="#Waiting-TTFB" class="headerlink" title="Waiting (TTFB)"></a>Waiting (TTFB)</h3><p>等待服务端初始响应的时间。</p>
+<p>也就是从请求发出开始，服务端接收到请求，返回数据，客户端接收到第一个字节的这一段时间。</p>
+<p>这个时间段代表服务器处理和返回数据网络延时时间。</p>
+<p>如果时间过长，说明可能客户端与服务端之间网络较差或服务器响应较慢。</p>
+<p>服务器优化的目的就是要让这个时间段尽可能短。</p>
+<h3 id="Content-Download-Downloading"><a href="#Content-Download-Downloading" class="headerlink" title="Content Download / Downloading"></a>Content Download / Downloading</h3><p>接收响应数据时间。</p>
+<p>也就是客户端接收到服务端返回的第一个字节开始，到接收到最后一个字节结束的这一段时间。</p>
+<p>一般来说时间也比较小，如果返回体比较大，这个时间也可能会长一点。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/chrome-devtools/network-performance/understanding-resource-timing">https://developers.google.com/web/tools/chrome-devtools/network-performance/understanding-resource-timing</a></p>
+<h1 id="官方解释"><a href="#官方解释" class="headerlink" title="官方解释"></a>官方解释</h1><p>The primary phases of the request lifecycle are:</p>
+<ul>
+<li><p>Redirect<br>Immediately begins startTime.<br>If a redirect is happening, redirectStart begins as well.<br>If a redirect is occurring at the end of this phase then redirectEnd will be taken.</p>
+</li>
+<li><p>App Cache<br>If it’s application cache fulfilling the request, a fetchStart time will be taken.</p>
+</li>
+<li><p>DNS<br>domainLookupStart time is taken at the beginning of the DNS request.<br>domainLookupEnd time is taken at the end of the DNS request.</p>
+</li>
+<li><p>TCP<br>connectStart is taken when initially connecting to the server.<br>If TLS or SSL are in use then secureConnectionStart will start when the handshake begins for securing the connection.<br>connectEnd is taken when the connection to the server is complete.</p>
+</li>
+<li><p>Request<br>requestStart is taken once the request for a resource has been sent to the server.</p>
+</li>
+<li><p>Response<br>responseStart is the time when the server initially responds to the request.<br>responseEnd is the time when the request ends and the data is retrieved.</p>
+</li>
+</ul>
+<p><img src="/images/docs/web/%E4%BC%98%E5%8C%96/Chrome-Network-Resource-Timing/img-2.png"></p>
+<p>timing 图:</p>
+<ul>
+<li><p>Queuing<br>A request being queued indicates that:<br>The request was postponed by the rendering engine because it’s considered lower priority than critical resources (such as scripts/styles). This often happens with images.<br>The request was put on hold to wait for an unavailable TCP socket that’s about to free up.<br>The request was put on hold because the browser only allows six TCP connections per origin on HTTP 1.<br>Time spent making disk cache entries (typically very quick.)</p>
+</li>
+<li><p>Stalled/Blocking<br>Time the request spent waiting before it could be sent. It can be waiting for any of the reasons described for Queueing. Additionally, this time is inclusive of any time spent in proxy negotiation.</p>
+</li>
+<li><p>Proxy Negotiation<br>Time spent negotiating with a proxy server connection.</p>
+</li>
+</ul>
+<ul>
+<li><p>DNS Lookup<br>Time spent performing the DNS lookup. Every new domain on a page requires a full roundtrip to do the DNS lookup.<br>Initial Connection / Connecting<br>Time it took to establish a connection, including TCP handshakes/retries and negotiating a SSL.</p>
+</li>
+<li><p>SSL<br>Time spent completing a SSL handshake.<br>Request Sent / Sending<br>Time spent issuing the network request. Typically a fraction of a millisecond.</p>
+</li>
+<li><p>Waiting (TTFB)<br>Time spent waiting for the initial response, also known as the Time To First Byte. This time captures the latency of a round trip to the server in addition to the time spent waiting for the server to deliver the response.<br>Content Download / Downloading<br>Time spent receiving the response data.</p>
+</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/hy-inger/hy-inger.github.io/issues/1">Chrome Network Resource Timing详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/chrome-devtools/network/understanding-resource-timing">Understanding Resource Timing</a></li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://getone.run/2019/04/27/Chrome-Network-Resource-Timing%E8%AF%A6%E8%A7%A3/" title="Chrome Network Resource Timing详解" target="_blank" rel="external">http://getone.run/2019/04/27/Chrome-Network-Resource-Timing详解/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/lqmeta" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/web_others/hexo-docs/images/my/head-sculpture/WechatIMG67.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/lqmeta" target="_blank"><span class="text-dark">lqmeta</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/web_others/hexo-docs/2020/01/17/%E5%89%8D%E7%AB%AF%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E7%BC%93%E5%AD%98/" title="前端浏览器的缓存"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/web_others/hexo-docs/2018/08/06/Scheme/" title="Scheme"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">    <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/web_others/hexo-docs/images/my/pay/aliPay.jpeg" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/web_others/hexo-docs/images/my/pay/WechatIMG700.jpeg" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lqmeta" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2517096010" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/web_others/hexo-docs/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2024 lqmeta 保留所有权利。
+        
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/lqmeta" target="_blank"> cofess </a>base on <a href="https://github.com/lqmeta/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+        <div>
+            <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2020079004号-1</a>
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/web_others/hexo-docs/js/plugin.min.js"></script>
+
+
+<script src="/web_others/hexo-docs/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/web_others/hexo-docs/',
+        CONTENT_URL: '/web_others/hexo-docs/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/web_others/hexo-docs/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+</body>
+</html>

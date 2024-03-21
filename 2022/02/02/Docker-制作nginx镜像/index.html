@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Docker - 制作Nginx镜像 | 学习技术分享</title>
+  <meta name="description" content="本文基于腾讯云云服务器CVM系统工具配置文章的基础上，在腾讯云云服务器(CentOS系统)上基于镜像文件Dockerfile制作 Nginx 镜像。 本教程的示例代码: nginx-1.21.6-image Nginx confignginx.conf Docker Nginx镜像里使用的 Nginx 配置: nginxConfig&#x2F;nginx.conf1234567891011121314151">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker - 制作Nginx镜像">
+<meta property="og:url" content="http://getone.run/2022/02/02/Docker-%E5%88%B6%E4%BD%9Cnginx%E9%95%9C%E5%83%8F/index.html">
+<meta property="og:site_name" content="学习技术分享">
+<meta property="og:description" content="本文基于腾讯云云服务器CVM系统工具配置文章的基础上，在腾讯云云服务器(CentOS系统)上基于镜像文件Dockerfile制作 Nginx 镜像。 本教程的示例代码: nginx-1.21.6-image Nginx confignginx.conf Docker Nginx镜像里使用的 Nginx 配置: nginxConfig&#x2F;nginx.conf1234567891011121314151">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/nginx-2.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/nginx-1.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-114823%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-122145%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-120747%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-131352%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-133255%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-133449%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-121254%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-121437%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-134111%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-134241%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-134416%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-134436%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-134621%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-135956%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-140200%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-142905%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-140735%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-141054%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-142525%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-160617%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-161335%402x.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-163625%402x.png">
+<meta property="article:published_time" content="2022-02-02T04:29:54.000Z">
+<meta property="article:modified_time" content="2024-03-04T08:50:15.662Z">
+<meta property="article:author" content="lqmeta">
+<meta property="article:tag" content="镜像">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/nginx-2.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://getone.run/2022/02/02/Docker-%E5%88%B6%E4%BD%9Cnginx%E9%95%9C%E5%83%8F/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="学习技术分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/web_others/hexo-docs/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/lqmeta" target="_blank">
+          <img class="img-circle img-rotate" src="/web_others/hexo-docs/images/my/head-sculpture/WechatIMG67.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">lqmeta</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/web_others/hexo-docs/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/web_others/hexo-docs/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/web_others/hexo-docs/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/web_others/hexo-docs/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/web_others/hexo-docs/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/web_others/hexo-docs/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lqmeta" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2517096010" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/web_others/hexo-docs/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Node-js/">Node.js</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Serverless/">Serverless</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Tools/">Tools</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/CentOS/" rel="tag">CentOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/Django/" rel="tag">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/editor/" rel="tag">editor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E5%AE%89%E8%A3%85%E5%8C%85/" rel="tag">安装包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">环境安装</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" rel="tag">镜像</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/web_others/hexo-docs/tags/CentOS/" style="font-size: 13px;">CentOS</a> <a href="/web_others/hexo-docs/tags/Django/" style="font-size: 13px;">Django</a> <a href="/web_others/hexo-docs/tags/Hexo/" style="font-size: 13px;">Hexo</a> <a href="/web_others/hexo-docs/tags/editor/" style="font-size: 13px;">editor</a> <a href="/web_others/hexo-docs/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 13px;">协议</a> <a href="/web_others/hexo-docs/tags/%E5%AE%89%E8%A3%85%E5%8C%85/" style="font-size: 13px;">安装包</a> <a href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 13.5px;">环境安装</a> <a href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 14px;">笔记</a> <a href="/web_others/hexo-docs/tags/%E7%BC%93%E5%AD%98/" style="font-size: 13px;">缓存</a> <a href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" style="font-size: 13px;">镜像</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2022/02/">February 2022</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/09/">September 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/06/">June 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/02/">February 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/01/">January 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/08/">August 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/07/">July 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/03/">March 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2016/01/">January 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/13/hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99%E6%9C%8D%E5%8A%A1%E5%88%B6%E4%BD%9C%E6%88%90%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2/" class="title">hexo个人博客网站服务制作成镜像部署</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-13T07:16:40.000Z" itemprop="datePublished">2022-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/13/Docker-%E5%88%B6%E4%BD%9CNodejs%E9%95%9C%E5%83%8F/" class="title">Docker - 制作Nodejs镜像</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-13T03:01:07.000Z" itemprop="datePublished">2022-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/12/Docker-Compose%E5%AE%89%E8%A3%85/" class="title">Docker Compose安装</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-12T06:34:32.000Z" itemprop="datePublished">2022-02-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a>
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/12/%E5%88%B6%E4%BD%9C-Nginx-1-21-6-%E5%85%8D%E5%AE%89%E8%A3%85%E5%8C%85/" class="title">制作 Nginx-1.21.6 免安装包</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-12T05:58:31.000Z" itemprop="datePublished">2022-02-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/06/VS-Code-Remote-SSH%E9%85%8D%E7%BD%AE/" class="title">VS Code Remote SSH配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-05T17:43:30.000Z" itemprop="datePublished">2022-02-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Nginx-config"><span class="toc-number">1.</span> <span class="toc-text">Nginx config</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Nginx-%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2"><span class="toc-number">2.</span> <span class="toc-text">Nginx 静态页面</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Nginx-%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-number">3.</span> <span class="toc-text">Nginx 安装包</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ENTRYPOINT-%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC"><span class="toc-number">4.</span> <span class="toc-text">ENTRYPOINT 启动脚本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Dockerfile"><span class="toc-number">5.</span> <span class="toc-text">Dockerfile</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="toc-number">5.1.</span> <span class="toc-text">构建镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E9%95%9C%E5%83%8F"><span class="toc-number">5.2.</span> <span class="toc-text">运行镜像</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker-Hub"><span class="toc-number">6.</span> <span class="toc-text">Docker Hub</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%A5%BD-Docker-Hub-%E8%B4%A6%E5%8F%B7"><span class="toc-number">6.1.</span> <span class="toc-text">创建好 Docker Hub 账号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E7%BB%88%E7%AB%AF%E7%99%BB%E5%BD%95-Docker-Hub-%E8%B4%A6%E5%8F%B7"><span class="toc-number">6.2.</span> <span class="toc-text">在终端登录 Docker Hub 账号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93-tag"><span class="toc-number">6.3.</span> <span class="toc-text">打 tag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A8%E9%80%81%E5%88%B0-Docker-Hub"><span class="toc-number">6.4.</span> <span class="toc-text">推送到 Docker Hub</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%92%E6%A1%A3%E5%AD%98%E5%82%A8"><span class="toc-number">6.5.</span> <span class="toc-text">归档存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%BD%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%BD%92%E6%A1%A3%E5%AD%98%E5%82%A8%E7%9A%84%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6%E9%95%9C%E5%83%8F"><span class="toc-number">6.5.1.</span> <span class="toc-text">载入本地归档存储的镜像文件镜像</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%9A%E8%BF%87-VS-Code-%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%E5%9C%A8%E6%9C%AC%E5%9C%B0-mac-%E6%9C%BA%E5%99%A8%E8%AE%BF%E9%97%AE"><span class="toc-number">7.</span> <span class="toc-text">通过 VS Code 端口转发在本地 mac 机器访问</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Docker-Compose"><span class="toc-number">8.</span> <span class="toc-text">Docker Compose</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Docker-制作nginx镜像" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Docker - 制作Nginx镜像
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/web_others/hexo-docs/2022/02/02/Docker-%E5%88%B6%E4%BD%9Cnginx%E9%95%9C%E5%83%8F/" class="article-date">
+	  <time datetime="2022-02-02T04:29:54.000Z" itemprop="datePublished">2022-02-02</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/web_others/hexo-docs/categories/Docker/">Docker</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" rel="tag">镜像</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/web_others/hexo-docs/2022/02/02/Docker-%E5%88%B6%E4%BD%9Cnginx%E9%95%9C%E5%83%8F/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>本文基于<a href="/web_others/hexo-docs/2021/09/05/%E8%85%BE%E8%AE%AF%E4%BA%91%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8CVM%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/" title="腾讯云云服务器CVM系统工具配置">腾讯云云服务器CVM系统工具配置</a>文章的基础上，在腾讯云云服务器(CentOS系统)上基于镜像文件Dockerfile制作 Nginx 镜像。</p>
+<p>本教程的示例代码: <a target="_blank" rel="noopener" href="https://github.com/lqmeta/examples/tree/master/nginx-1.21.6-image">nginx-1.21.6-image</a></p>
+<h1 id="Nginx-config"><a href="#Nginx-config" class="headerlink" title="Nginx config"></a>Nginx config</h1><p><a target="_blank" rel="noopener" href="https://github.com/lqmeta/examples/blob/master/nginx-1.21.6-image/nginxConfig/nginx.conf">nginx.conf</a></p>
+<p>Docker Nginx镜像里使用的 Nginx 配置:</p>
+<figure class="highlight plaintext"><figcaption><span>nginxConfig/nginx.conf</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">#user  nobody;</span><br><span class="line">worker_processes  2;</span><br><span class="line"></span><br><span class="line">#error_log  logs/error.log;</span><br><span class="line">#error_log  logs/error.log  notice;</span><br><span class="line">#error_log  logs/error.log  info;</span><br><span class="line"></span><br><span class="line">#pid        logs/nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    #log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span><br><span class="line">    #                  &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span><br><span class="line">    #                  &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">    #access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line">        #access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            root   /opt/app/nginx;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        #error_page  404              /404.html;</span><br><span class="line"></span><br><span class="line">        # redirect server error pages to the static page /50x.html</span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line"></span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Nginx-静态页面"><a href="#Nginx-静态页面" class="headerlink" title="Nginx 静态页面"></a>Nginx 静态页面</h1><p>Nginx镜像构建的时候，将 <code>dist</code> 目录下面的静态文件 COPY 进 Nginx 服务的根目录(<code>/opt/app/nginx</code>)里。</p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/nginx-2.png"></p>
+<h1 id="Nginx-安装包"><a href="#Nginx-安装包" class="headerlink" title="Nginx 安装包"></a>Nginx 安装包</h1><p><a target="_blank" rel="noopener" href="https://nginx.org/en/download.html">Nginx 官网</a></p>
+<p>在官网里下载 Nginx 安装包</p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/nginx-1.png"></p>
+<p>Nginx 安装包放置 <code>packages</code> 目录下面。</p>
+<p>解压 <code>packages/nginx-1.21.6.tar.gz</code> 安装包。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf nginx-1.21.6.tar.gz</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="ENTRYPOINT-启动脚本"><a href="#ENTRYPOINT-启动脚本" class="headerlink" title="ENTRYPOINT 启动脚本"></a>ENTRYPOINT 启动脚本</h1><p>ENTRYPOINT 启动脚本放置 <code>scripts</code> 目录下面。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/lqmeta/examples/blob/master/nginx-1.21.6-image/scripts/run.sh">scripts/run.sh</a></p>
+<figure class="highlight sh"><figcaption><span>scripts/run.sh</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动 nginx 服务</span></span><br><span class="line">/usr/local/services/nginx/sbin/nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># run the command given as arguments from CMD</span></span><br><span class="line"><span class="built_in">exec</span> <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h1><p><a target="_blank" rel="noopener" href="https://github.com/lqmeta/examples/blob/master/nginx-1.21.6-image/Dockerfile">Dockerfile</a></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Nginx 服务镜像</span></span><br><span class="line"><span class="comment"># - https://hub.docker.com/_/centos?tab=tags&amp;page=1</span></span><br><span class="line"><span class="keyword">FROM</span> centos:centos7.<span class="number">9.2009</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /opt/app</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">LABEL</span><span class="language-bash"> maintainer=<span class="string">&quot;luqiangzeng@gmail.com&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义环境变量</span></span><br><span class="line"><span class="keyword">ENV</span> NGINX_PACKAGE_PATH /usr/local/services/nginx-<span class="number">1.21</span>.<span class="number">6</span></span><br><span class="line"><span class="keyword">ENV</span> NGINX_PATH /usr/local/services/nginx</span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./packages/nginx-1.21.6 <span class="variable">$&#123;NGINX_PACKAGE_PATH&#125;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./scripts/ /opt/app/scripts/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD</span><span class="language-bash"> ./dist/index.html ./nginx/index.html</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> useradd -M -s /sbin/nologin nginx &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">  yum install -y gcc gcc-c++ openssl openssl-devel make libssl-dev libpcre3 libpcre3-dev pcre-devel &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">  <span class="built_in">cd</span> <span class="variable">$&#123;NGINX_PACKAGE_PATH&#125;</span> &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">  ./configure --prefix=/usr/local/services/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_v2_module --with-http_gzip_static_module --with-ipv6 --with-http_sub_module &amp;&amp; \</span></span><br><span class="line"><span class="language-bash">  make &amp;&amp; make install</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> ./nginxConfig/nginx.conf <span class="variable">$&#123;NGINX_PATH&#125;</span>/conf/nginx.conf</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;/opt/app/scripts/run.sh&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>当前目录结构:<br><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-114823%402x.png"></p>
+<h2 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h2><blockquote>
+<p>备注: 在Dockerfile路径下执行docker build</p>
+</blockquote>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t nginx-demo .</span><br></pre></td></tr></table></figure>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-122145%402x.png"></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-120747%402x.png"></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-131352%402x.png"></p>
+<h2 id="运行镜像"><a href="#运行镜像" class="headerlink" title="运行镜像"></a>运行镜像</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name nginx-demo -p 80:80 -d nginx-demo /usr/sbin/init</span><br></pre></td></tr></table></figure>
+
+<p>检查运行的容器:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker ps -a</span><br><span class="line">curl http://localhost</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-133255%402x.png"></p>
+<p>进入容器镜像终端:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it nginx-demo /bin/sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-133449%402x.png"></p>
+<h1 id="Docker-Hub"><a href="#Docker-Hub" class="headerlink" title="Docker Hub"></a>Docker Hub</h1><p>将镜像推送到 <a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a> 上。</p>
+<h2 id="创建好-Docker-Hub-账号"><a href="#创建好-Docker-Hub-账号" class="headerlink" title="创建好 Docker Hub 账号"></a>创建好 Docker Hub 账号</h2><p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-121254%402x.png"></p>
+<h2 id="在终端登录-Docker-Hub-账号"><a href="#在终端登录-Docker-Hub-账号" class="headerlink" title="在终端登录 Docker Hub 账号"></a>在终端登录 Docker Hub 账号</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker login</span><br></pre></td></tr></table></figure>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-121437%402x.png"></p>
+<h2 id="打-tag"><a href="#打-tag" class="headerlink" title="打 tag"></a>打 tag</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注意: xxxxxxx 改为自己的 Docker Hub 账号</span></span><br><span class="line">docker image tag nginx-demo:latest xxxxxxx/nginx-demo:1.0.0</span><br><span class="line">docker image tag nginx-demo:latest xxxxxxx/nginx-demo:latest</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-134111%402x.png"></p>
+<h2 id="推送到-Docker-Hub"><a href="#推送到-Docker-Hub" class="headerlink" title="推送到 Docker Hub"></a>推送到 Docker Hub</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 推送 1.0.0 版本镜像</span></span><br><span class="line">docker push luqiangzeng/nginx-demo:1.0.0</span><br><span class="line"><span class="comment"># 推送 latest 版本镜像</span></span><br><span class="line">docker push luqiangzeng/nginx-demo:latest</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-134241%402x.png"></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-134416%402x.png"></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-134436%402x.png"></p>
+<h2 id="归档存储"><a href="#归档存储" class="headerlink" title="归档存储"></a>归档存储</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker save luqiangzeng/nginx-demo:1.0.0 | gzip &gt; ./nginx-demo.1.0.0.tgz</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-134621%402x.png"></p>
+<h3 id="载入本地归档存储的镜像文件镜像"><a href="#载入本地归档存储的镜像文件镜像" class="headerlink" title="载入本地归档存储的镜像文件镜像"></a>载入本地归档存储的镜像文件镜像</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load -i ./nginx-demo.1.0.0.tgz</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-135956%402x.png"></p>
+<p>运行镜像:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name nginx-demo -p 80:80 -d luqiangzeng/nginx-demo:1.0.0 /usr/sbin/init</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-140200%402x.png"></p>
+<p>停止运行容器container:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker stop &lt;CONTAINER ID&gt;</span><br><span class="line">docker stop 49029f581e06</span><br></pre></td></tr></table></figure>
+
+<p>删除运行容器container:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">rm</span> -f &lt;CONTAINER ID&gt;</span><br><span class="line">docker <span class="built_in">rm</span> -f 49029f581e06</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-142905%402x.png"></p>
+<h1 id="通过-VS-Code-端口转发在本地-mac-机器访问"><a href="#通过-VS-Code-端口转发在本地-mac-机器访问" class="headerlink" title="通过 VS Code 端口转发在本地 mac 机器访问"></a>通过 VS Code 端口转发在本地 mac 机器访问</h1><p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-140735%402x.png"></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-141054%402x.png"></p>
+<h1 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h1><a href="/web_others/hexo-docs/2022/02/12/Docker-Compose%E5%AE%89%E8%A3%85/" title="Docker Compose安装">Docker Compose安装</a>
+<!-- [Docker Compose安装](https://cloud.tencent.com/developer/article/1942706) -->
+
+
+<p>1、将容器中Nginx根目录(<code>/opt/app/nginx</code>) 挂载至本机的目录(<code>/home/coder/app/nginx-demo/html</code>)上:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建 /home/coder/app/nginx-demo/html 文件夹</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /home/coder/app/nginx-demo/html</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-142525%402x.png"></p>
+<p>2、在本机创建 <code>./html/index.html</code> 文件:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt; ./html/index.html &lt;&lt;<span class="string">EOF # 开始</span></span><br><span class="line"><span class="string">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="string">&lt;html lang=&quot;en&quot;&gt;</span></span><br><span class="line"><span class="string">&lt;head&gt;</span></span><br><span class="line"><span class="string">  &lt;meta charset=&quot;UTF-8&quot;&gt;</span></span><br><span class="line"><span class="string">  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;</span></span><br><span class="line"><span class="string">  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span></span><br><span class="line"><span class="string">  &lt;title&gt;Document&lt;/title&gt;</span></span><br><span class="line"><span class="string">&lt;/head&gt;</span></span><br><span class="line"><span class="string">&lt;body&gt;</span></span><br><span class="line"><span class="string">  &lt;h1&gt;test html/index.html&lt;/h1&gt;</span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-160617%402x.png"></p>
+<p>3、docker-compose.yml 的配置:<br><a target="_blank" rel="noopener" href="https://github.com/lqmeta/examples/blob/master/nginx-1.21.6-image/docker-compose/docker-compose.yaml">docker-compose.yml</a></p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;2&quot;</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">default:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">bridge</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">nginx-demo:</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="comment"># 镜像</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">luqiangzeng/nginx-demo:1.0.0</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">nginx-demo</span></span><br><span class="line">    <span class="comment"># 将容器中Nginx根目录(`/opt/app/nginx`) 挂载至本机的目录上</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/home/coder/app/nginx-demo/html:/opt/app/nginx</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;80:80&quot;</span></span><br><span class="line">      <span class="comment"># 若开启 https 可以映射443端口</span></span><br><span class="line">      <span class="comment"># - &quot;443:443&quot;</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">/usr/sbin/init</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>4、执行 docker-compose up 命令来启动并运行整个应用程序:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://docs.docker.com/engine/reference/commandline/compose_up/</span></span><br><span class="line">docker-compose up</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果你想在后台执行该服务可以加上 -d 参数:</span></span><br><span class="line"><span class="comment"># Detached mode: Run containers in the background</span></span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<!-- ![](https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-154602%402x.png) -->
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-161335%402x.png"></p>
+<p>5、相关指令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看 docker 日志</span></span><br><span class="line">docker-compose logs -f nginx-demo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入容器container终端</span></span><br><span class="line">docker-compose <span class="built_in">exec</span> nginx-demo bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止 nginx-demo 容器container</span></span><br><span class="line">docker-compose down</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重建和更新容器</span></span><br><span class="line">docker-compose up -d --no-deps --build nginx-demo</span><br></pre></td></tr></table></figure>
+
+<p>进入容器container终端，查看 Nginx 根目录文件: <code>docker-compose exec nginx-demo bash</code><br><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0212/WX20220212-163625%402x.png"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://getone.run/2022/02/02/Docker-%E5%88%B6%E4%BD%9Cnginx%E9%95%9C%E5%83%8F/" title="Docker - 制作Nginx镜像" target="_blank" rel="external">http://getone.run/2022/02/02/Docker-制作nginx镜像/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/lqmeta" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/web_others/hexo-docs/images/my/head-sculpture/WechatIMG67.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/lqmeta" target="_blank"><span class="text-dark">lqmeta</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/web_others/hexo-docs/2022/02/02/Sublime-Text/" title="Sublime Text"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/web_others/hexo-docs/2021/10/16/Docker%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" title="Docker环境安装"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">    <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/web_others/hexo-docs/images/my/pay/aliPay.jpeg" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/web_others/hexo-docs/images/my/pay/WechatIMG700.jpeg" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lqmeta" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2517096010" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/web_others/hexo-docs/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2024 lqmeta 保留所有权利。
+        
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/lqmeta" target="_blank"> cofess </a>base on <a href="https://github.com/lqmeta/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+        <div>
+            <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2020079004号-1</a>
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/web_others/hexo-docs/js/plugin.min.js"></script>
+
+
+<script src="/web_others/hexo-docs/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/web_others/hexo-docs/',
+        CONTENT_URL: '/web_others/hexo-docs/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/web_others/hexo-docs/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+</body>
+</html>

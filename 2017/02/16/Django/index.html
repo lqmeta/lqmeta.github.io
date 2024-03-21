@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Django | 学习技术分享</title>
+  <meta name="description" content="示例：1、创建一个项目：    $ django-admin startproject website   2、配置数据库 创建数据库 webdemo    DATABASES &#x3D; &amp;#123;     &#39;default&#39;: &amp;#123;         &#39;ENGINE&#39;: &#39;django.db.backends.mysql&#39;,         &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django">
+<meta property="og:url" content="http://getone.run/2017/02/16/Django/index.html">
+<meta property="og:site_name" content="学习技术分享">
+<meta property="og:description" content="示例：1、创建一个项目：    $ django-admin startproject website   2、配置数据库 创建数据库 webdemo    DATABASES &#x3D; &amp;#123;     &#39;default&#39;: &amp;#123;         &#39;ENGINE&#39;: &#39;django.db.backends.mysql&#39;,         &amp;#">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://getone.run/2017/02/images/Django/img1.png">
+<meta property="article:published_time" content="2017-02-16T03:49:37.000Z">
+<meta property="article:modified_time" content="2024-03-04T08:50:15.661Z">
+<meta property="article:author" content="lqmeta">
+<meta property="article:tag" content="Django">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://getone.run/2017/02/images/Django/img1.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://getone.run/2017/02/16/Django/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="学习技术分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/web_others/hexo-docs/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/lqmeta" target="_blank">
+          <img class="img-circle img-rotate" src="/web_others/hexo-docs/images/my/head-sculpture/WechatIMG67.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">lqmeta</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/web_others/hexo-docs/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/web_others/hexo-docs/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/web_others/hexo-docs/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/web_others/hexo-docs/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/web_others/hexo-docs/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/web_others/hexo-docs/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lqmeta" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2517096010" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/web_others/hexo-docs/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Node-js/">Node.js</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Serverless/">Serverless</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Tools/">Tools</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/CentOS/" rel="tag">CentOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/Django/" rel="tag">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/editor/" rel="tag">editor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E5%AE%89%E8%A3%85%E5%8C%85/" rel="tag">安装包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">环境安装</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" rel="tag">镜像</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/web_others/hexo-docs/tags/CentOS/" style="font-size: 13px;">CentOS</a> <a href="/web_others/hexo-docs/tags/Django/" style="font-size: 13px;">Django</a> <a href="/web_others/hexo-docs/tags/Hexo/" style="font-size: 13px;">Hexo</a> <a href="/web_others/hexo-docs/tags/editor/" style="font-size: 13px;">editor</a> <a href="/web_others/hexo-docs/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 13px;">协议</a> <a href="/web_others/hexo-docs/tags/%E5%AE%89%E8%A3%85%E5%8C%85/" style="font-size: 13px;">安装包</a> <a href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 13.5px;">环境安装</a> <a href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 14px;">笔记</a> <a href="/web_others/hexo-docs/tags/%E7%BC%93%E5%AD%98/" style="font-size: 13px;">缓存</a> <a href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" style="font-size: 13px;">镜像</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2022/02/">February 2022</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/09/">September 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/06/">June 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/02/">February 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/01/">January 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/08/">August 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/07/">July 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/03/">March 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2016/01/">January 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/13/hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99%E6%9C%8D%E5%8A%A1%E5%88%B6%E4%BD%9C%E6%88%90%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2/" class="title">hexo个人博客网站服务制作成镜像部署</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-13T07:16:40.000Z" itemprop="datePublished">2022-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/13/Docker-%E5%88%B6%E4%BD%9CNodejs%E9%95%9C%E5%83%8F/" class="title">Docker - 制作Nodejs镜像</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-13T03:01:07.000Z" itemprop="datePublished">2022-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/12/Docker-Compose%E5%AE%89%E8%A3%85/" class="title">Docker Compose安装</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-12T06:34:32.000Z" itemprop="datePublished">2022-02-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a>
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/12/%E5%88%B6%E4%BD%9C-Nginx-1-21-6-%E5%85%8D%E5%AE%89%E8%A3%85%E5%8C%85/" class="title">制作 Nginx-1.21.6 免安装包</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-12T05:58:31.000Z" itemprop="datePublished">2022-02-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/06/VS-Code-Remote-SSH%E9%85%8D%E7%BD%AE/" class="title">VS Code Remote SSH配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-05T17:43:30.000Z" itemprop="datePublished">2022-02-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">示例：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E9%A1%B9%E7%9B%AE%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">一、创建一个项目：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">二、开发服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%88%9B%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">三、创建模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%8E%A9%E8%BD%ACAPI"><span class="toc-number">5.</span> <span class="toc-text">四、玩转API</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%AE%A1%E7%90%86%E5%91%98%E7%94%A8%E6%88%B7"><span class="toc-number">6.</span> <span class="toc-text">五、创建一个管理员用户</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E7%BC%96%E5%86%99%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%A7%86%E5%9B%BE"><span class="toc-number">7.</span> <span class="toc-text">六、编写你的第一个视图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E7%A7%BB%E9%99%A4%E6%A8%A1%E6%9D%BF%E4%B8%AD%E7%A1%AC%E7%BC%96%E7%A0%81%E7%9A%84URLs"><span class="toc-number">8.</span> <span class="toc-text">七、移除模板中硬编码的URLs</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Django" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Django
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/web_others/hexo-docs/2017/02/16/Django/" class="article-date">
+	  <time datetime="2017-02-16T03:49:37.000Z" itemprop="datePublished">2017-02-16</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/web_others/hexo-docs/categories/Python/">Python</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/web_others/hexo-docs/tags/Django/" rel="tag">Django</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/web_others/hexo-docs/2017/02/16/Django/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h1><p>1、创建一个项目：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ django-admin startproject website
+</code></pre>
+</blockquote>
+<p>2、配置数据库</p>
+<p>创建数据库 webdemo</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>DATABASES = &#123;
+    &#39;default&#39;: &#123;
+        &#39;ENGINE&#39;: &#39;django.db.backends.mysql&#39;,
+        &#39;NAME&#39;: &#39;webdemo&#39;,
+        &#39;USER&#39;: &#39;root&#39;,
+        &#39;PASSWORD&#39;: &#39;xxxxx&#39;,
+        &#39;HOST&#39;: &#39;localhost&#39;,
+        &#39;PORT&#39;: &#39;3306&#39;,
+    &#125;
+&#125;
+</code></pre>
+</blockquote>
+<p>3、验证开发服务器：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py runserver
+</code></pre>
+</blockquote>
+<p>你将看到命令行下输出了以下内容：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>Performing system checks...
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>0 errors found
+May 13, 2015 - 15:50:53
+Django version 1.8, using settings &#39;mysite.settings&#39;
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+</code></pre>
+</blockquote>
+<hr>
+<blockquote>
+</blockquote>
+<p>4、创建您的应用程序： </p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py startapp polls           #创建了 polls 应用文件
+</code></pre>
+</blockquote>
+<p>4.1、创建两个模型： Question和Choice。</p>
+<p>polls/models.py</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.db import models
+</code></pre>
+</blockquote>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField(&#39;date published&#39;)
+</code></pre>
+</blockquote>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>class Choice(models.Model):
+    question = models.ForeignKey(Question)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+</code></pre>
+</blockquote>
+<p>4.2、激活应用模型</p>
+<p>website/settings.py</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>INSTALLED_APPS = (
+    &#39;django.contrib.admin&#39;,
+    &#39;django.contrib.auth&#39;,
+    &#39;django.contrib.contenttypes&#39;,
+    &#39;django.contrib.sessions&#39;,
+    &#39;django.contrib.messages&#39;,
+    &#39;django.contrib.staticfiles&#39;,
+    &#39;polls&#39;,
+)
+</code></pre>
+</blockquote>
+<p>4.3、现在Django知道要包含polls应用。 让我们运行另外一个命令：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py makemigrations polls
+</code></pre>
+</blockquote>
+<p>你应该看到类似下面的内容：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>Migrations for &#39;polls&#39;:
+  0001_initial.py:
+    - Create model Question
+    - Create model Choice
+    - Add field question to choice
+</code></pre>
+</blockquote>
+<p>4.4、首先，让我们看一下迁移行为将会执行哪些SQL语句。</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py sqlmigrate polls 0001
+</code></pre>
+</blockquote>
+<img src="../../images/Django/img1.png" style="display: block;margin: auto;"/>
+
+<p>4.5、现在，再次运行migrate以在你的数据库中创建模型所对应的表：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py migrate
+</code></pre>
+</blockquote>
+<blockquote>
+</blockquote>
+<p>5、创建一个管理员用户</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py createsuperuser
+</code></pre>
+</blockquote>
+<p>键入你想要使用的用户名，然后按下回车键等等。</p>
+<p>启动开发服务器：Django的管理站点是默认启用的。 </p>
+<p>让我们启动开发服务器，然后探索它。</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py runserver 127.0.0.1:13709
+</code></pre>
+</blockquote>
+<p>访问 <a target="_blank" rel="noopener" href="http://localhost:13709/admin">http://localhost:13709/admin</a></p>
+<blockquote>
+</blockquote>
+<p>6、编写你的第一个视图</p>
+<p>polls/views.py</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.http import HttpResponse
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>def index(request):
+        return HttpResponse(&quot;Hello, world. You&#39;re at the polls index.&quot;)
+</code></pre>
+</blockquote>
+<blockquote>
+</blockquote>
+<p>7、为了能够调用这个视图，我们需要将这个视图映射到URL上 —— 利用一个URLconf。</p>
+<p>为了在投票应用目录内部创建URLconf，需要创建一个urls.py文件。</p>
+<p>新建 polls/urls.py</p>
+<p>在polls/urls.py文件中键入如下代码：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.conf.urls import url
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>from . import views
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>urlpatterns = [
+    url(r&#39;^$&#39;, views.index, name=&#39;index&#39;),
+]
+</code></pre>
+</blockquote>
+<p>下一步，让主 URLconf 可以链接到 polls.urls 模块。</p>
+<p>在 website/urls.py 中插入一个include()：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.conf.urls import include, url
+from django.contrib import admin
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>urlpatterns = [
+        url(r&#39;^polls/&#39;, include(&#39;polls.urls&#39;)),
+        url(r&#39;^admin/&#39;, include(admin.site.urls)),
+]
+</code></pre>
+</blockquote>
+<h1 id="一、创建一个项目："><a href="#一、创建一个项目：" class="headerlink" title="一、创建一个项目："></a>一、创建一个项目：</h1><p>在命令行（终端）中，cd（例如cd exam)到你想要用来保存代码的目录，然后运行如下命令：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ django-admin startproject mysite
+</code></pre>
+</blockquote>
+<p>备注：django中文编码</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code># coding=utf8
+</code></pre>
+</blockquote>
+<p>/usr/local/lib/python2.7/dist-packages/django</p>
+<p>192.168.40.144</p>
+<h1 id="二、开发服务器"><a href="#二、开发服务器" class="headerlink" title="二、开发服务器"></a>二、开发服务器</h1><blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py runserver
+$ python manage.py runserver 8089
+</code></pre>
+</blockquote>
+<p>在Windows通过debain的主机ip访问</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py runserver 10.251.121.37:8989
+$ python manage.py runserver 10.251.121.37:8989
+$ python manage.py runserver 10.10.8.62:8989
+$ python manage.py runserver 127.0.0.1:8989
+</code></pre>
+</blockquote>
+<p>执行django的测试文件：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py test polls
+</code></pre>
+</blockquote>
+<h1 id="三、创建模型"><a href="#三、创建模型" class="headerlink" title="三、创建模型"></a>三、创建模型</h1><p>确保你在与manage.py相同的目录下，并且键入以下命令来创建你的应用： </p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py startapp polls            #创建了polls应用文件
+</code></pre>
+</blockquote>
+<p>1、编辑polls/models.py文件，并让它看起来像这样：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.db import models
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>class Question(models.Model):         #自动分配id为主键
+           question_text = models.CharField(max_length=200)
+        pub_date = models.DateTimeField(&#39;date published&#39;)
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>class Choice(models.Model):
+        question = models.ForeignKey(Question)
+        choice_text = models.CharField(max_length=200)
+        votes = models.IntegerField(default=0)
+</code></pre>
+</blockquote>
+<p>2、再次编辑mysite/settings.py文件，并修改INSTALLED_APPS设置以包含字符串’polls’。</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>INSTALLED_APPS = (
+    &#39;django.contrib.admin&#39;,
+    &#39;django.contrib.auth&#39;,
+    &#39;django.contrib.contenttypes&#39;,
+    &#39;django.contrib.sessions&#39;,
+    &#39;django.contrib.messages&#39;,
+    &#39;django.contrib.staticfiles&#39;,
+    &#39;polls&#39;,
+)
+</code></pre>
+</blockquote>
+<p>现在Django知道要包含polls应用。 让我们运行另外一个命令：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py makemigrations polls
+#$ python manage.py makemigrations
+</code></pre>
+</blockquote>
+<p>sqlmigrate命令接收迁移文件的名字并返回它们的SQL语句：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py sqlmigrate weibodata 0004
+</code></pre>
+</blockquote>
+<p>现在，再次运行migrate以在你的数据库中创建模型所对应的表：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py migrate
+</code></pre>
+</blockquote>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py runserver
+</code></pre>
+</blockquote>
+<p>备注：记住实现模型变更的三个步骤：</p>
+<p>1、修改你的模型（在models.py文件中）。</p>
+<p>2、运行        $ python manage.py runserver</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py makemigrations   //为这些修改创建迁移文件
+</code></pre>
+</blockquote>
+<blockquote>
+</blockquote>
+<p>Ps：sqlmigrate命令接收迁移文件的名字并返回它们的SQL语句：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py sqlmigrate polls 0001
+</code></pre>
+</blockquote>
+<p>3、运行</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>python manage.py migrate
+</code></pre>
+</blockquote>
+<p>将这些改变更新到数据库中。</p>
+<h1 id="四、玩转API"><a href="#四、玩转API" class="headerlink" title="四、玩转API"></a>四、玩转API</h1><p>使用如下命令来调用Python shell：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py shell
+</code></pre>
+</blockquote>
+<p>探索这些数据库 API：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>from polls.models import Question, Choice, mysitedata<br>from django.utils import timezone<br>Question.objects.all()<br>    []<br>q = Question(question_text=”What’s new?”, pub_date=timezone.now())<br>q.save()</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>或者：Question(question_text=”这但是是”, pub_date=timezone.now()).save()</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>mysitedata(mysite_text=&quot;测试&quot;, pub_date=timezone.now(),m_name=&quot;这&quot;, m_URL=&quot;www.baidu,com&quot;, o1_type=0,t1_color=1,fir_ss1=&quot;内部系统&quot;,sec_ss2=&quot;热门&quot;).save()
+</code></pre>
+</blockquote>
+<h1 id="五、创建一个管理员用户"><a href="#五、创建一个管理员用户" class="headerlink" title="五、创建一个管理员用户"></a>五、创建一个管理员用户</h1><p>1、首先，我们需要创建一个能够登录管理站点的用户。 运行如下命令：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>$ python manage.py createsuperuser
+</code></pre>
+</blockquote>
+<p>键入你想要使用的用户名，然后按下回车键：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>Username: admin
+</code></pre>
+</blockquote>
+<p>然后提示你输入想要使用的邮件地址：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>Email address: admin@example.com
+</code></pre>
+</blockquote>
+<p>最后一步是输入你的密码。 你将被要求输入你的密码两次，第二次输入是为了确认第一次的输入。</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>Password: **********
+Password (again): *********
+Superuser created successfully.
+</code></pre>
+</blockquote>
+<p>现在，打开一个浏览器访问你本地域名中的 “/admin/” —— 例如<a target="_blank" rel="noopener" href="http://127.0.0.1:8000/admin/">http://127.0.0.1:8000/admin/</a></p>
+<p>2、我们需要告诉管理站点Question 对象要有一个管理界面。 要做这件事，需要打开polls/admin.py文件，把它编辑成这样：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.contrib import admin
+from .models import Question
+admin.site.register(Question)
+</code></pre>
+</blockquote>
+<p>添加关联对象</p>
+<p>好了，我们已经有自己的Question管理界面。 但是一个Question有多个Choices，管理界面中并没有将选项显示出来。</p>
+<p>有两种方法来解决这个问题。 第一种是像我们为Question做的一样，在管理站点中注册Choice。这简单：</p>
+<p>在polls/admin.py文件中</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.contrib import admin
+from .models import Choice, Question
+# ...
+admin.site.register(Choice)
+</code></pre>
+</blockquote>
+<p>但事实上，这是一种不高效的方式来添加Choice对象到系统中。在创建Question对象的同时可以直接添加一组Choice将会更好。让我们实现这个功能。</p>
+<p>移除对Choice模型的register()调用。然后将Question的注册代码编辑为：</p>
+<p>在polls/admin.py文件中</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.contrib import admin
+from .models import Choice, Question
+class ChoiceInline(admin.StackedInline):
+        model = Choice
+        extra = 3
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>class QuestionAdmin(admin.ModelAdmin):
+        fieldsets = [
+            (None,               &#123;&#39;fields&#39;: [&#39;question_text&#39;]&#125;),
+            (&#39;Date information&#39;, &#123;&#39;fields&#39;: [&#39;pub_date&#39;], &#39;classes&#39;: [&#39;collapse&#39;]&#125;),
+        ]
+        inlines = [ChoiceInline]
+admin.site.register(Question, QuestionAdmin)
+</code></pre>
+</blockquote>
+<h1 id="六、编写你的第一个视图"><a href="#六、编写你的第一个视图" class="headerlink" title="六、编写你的第一个视图"></a>六、编写你的第一个视图</h1><p>让我们来编写第一个视图。 打开polls/views.py文件并将以下Python代码写入：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.http import HttpResponse
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>def index(request):
+        return HttpResponse(&quot;Hello, world. You&#39;re at the polls index.&quot;)
+</code></pre>
+</blockquote>
+<p>为了能够调用这个视图，我们需要将这个视图映射到URL上 —— 利用一个URLconf。<br>为了在投票应用目录内部创建URLconf，需要创建一个urls.py文件。你的应用的目录现在看起来应该像这样：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>polls/
+        __init__.py
+        admin.py
+        models.py
+        tests.py
+           urls.py
+        views.py
+</code></pre>
+</blockquote>
+<p>在polls/urls.py文件中键入如下代码：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.conf.urls import url
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>from . import views
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>urlpatterns = [
+    url(r&#39;^$&#39;, views.index, name=&#39;index&#39;),
+]
+</code></pre>
+</blockquote>
+<p>下一步，让主URLconf可以链接到polls.urls模块。在mysite/urls.py中插入一个include()：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.conf.urls import include, url
+from django.contrib import admin
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>urlpatterns = [
+        url(r&#39;^polls/&#39;, include(&#39;polls.urls&#39;)),
+        url(r&#39;^admin/&#39;, include(admin.site.urls)),
+]
+</code></pre>
+</blockquote>
+<p>现在我们已经将一个index视图关联到URLconf中。在你的浏览器中浏览 <a target="_blank" rel="noopener" href="http://localhost:8000/polls/">http://localhost:8000/polls/</a> , 你会看到 “Hello, world. You’re at the polls index.”, 正如你在index 视图中定义的那样.<br>备注：编写更多的视图<br>现在让我们给polls/views.py添加一些更多的视图。这些视图和之前的略有不同，因为它们另带了一个参数：<br>def detail(request, question_id):<br>        return HttpResponse(“You’re looking at question %s.” % question_id)</p>
+<p>def results(request, question_id):<br>        response = “You’re looking at the results of question %s.”<br>        return HttpResponse(response % question_id)</p>
+<p>def vote(request, question_id):<br>        return HttpResponse(“You’re voting on question %s.” % question_id)<br>通过下面的url() 调用将这些新的视图和polls.urls模块关联起来：<br>from django.conf.urls import url</p>
+<p>from . import views</p>
+<p>urlpatterns = [<br>    # ex: /polls/<br>    url(r’^$’, views.index, name=’index’),<br>    # ex: /polls/5/<br>    url(r’^(?P<question_id>[0-9]+)/$’, views.detail, name=’detail’),<br>    # ex: /polls/5/results/<br>    url(r’^(?P<question_id>[0-9]+)/results/$’, views.results, name=’results’),<br>    # ex: /polls/5/vote/<br>    url(r’^(?P<question_id>[0-9]+)/vote/$’, views.vote, name=’vote’),<br>]<br>备注：编写拥有实际功能的视图<br>1、快捷方式：render()<br>常见的习惯是载入一个模板、填充一个context 然后返回一个含有模板渲染结果的HttpResponse对象。Django为此提供一个快捷方式。<br>在polls/views.py文件中<br>from django.shortcuts import render<br>from .models import Question</p>
+<p>def index(request):<br>        latest_question_list = Question.objects.order_by(‘-pub_date’)[:5]<br>        context = {‘latest_question_list’: latest_question_list}<br>        return render(request, ‘polls/index.html’, context)<br>将以下的代码放入模板文件：在polls/templates/polls/index.html文件中</p>
+
+    	<p>No polls are available.</p>
+
+<p>2、快捷方式：get_object_or_404()<br>一种常见的习惯是使用get()并在对象不存在时引发Http404。Django为此提供一个快捷方式。<br>在polls/views.py文件中：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>from django.shortcuts import get_object_or_404, render
+</code></pre>
+<blockquote>
+</blockquote>
+<pre><code>from .models import Question
+# ...
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, &#39;polls/detail.html&#39;, &#123;&#39;question&#39;: question&#125;)
+在polls/templates/polls/detail.html文件中：
+&lt;h1&gt;&#123;&#123; question.question_text &#125;&#125;&lt;/h1&gt;
+&lt;ul&gt;
+&#123;% for choice in question.choice_set.all %&#125;
+        <li>&#123;&#123; choice.choice_text &#125;&#125;</li>
+    &#123;% endfor %&#125;
+&lt;/ul&gt;
+</code></pre>
+</blockquote>
+<h1 id="七、移除模板中硬编码的URLs"><a href="#七、移除模板中硬编码的URLs" class="headerlink" title="七、移除模板中硬编码的URLs"></a>七、移除模板中硬编码的URLs</h1><p>还记得吗，当我们在polls/index.html模板中编写一个指向Question的链接时，链接中一部分是硬编码的：</p>
+<pre><code>&lt;li&gt;&lt;a href=&quot;/polls/&#123;&#123; question.id &#125;&#125;/&quot;&gt;&#123;&#123; question.question_text &#125;&#125;&lt;/a&gt;&lt;/li&gt;
+这种硬编码、紧耦合的方法有一个问题，就是如果我们想在拥有许多模板文件的项目中修改URLs，那将会变得很有挑战性。 然而，因为你在polls.urls模块的url()函数中定义了name 参数，你可以通过使用&#123;% url %&#125;模板标签来移除对你的URL配置中定义的特定的URL的依赖：
+&lt;li&gt;&lt;a href=&quot;&#123;% url 'detail' question.id %&#125;&quot;&gt;&#123;&#123; question.question_text &#125;&#125;&lt;/a&gt;&lt;/li&gt;
+</code></pre>
+<p>它的工作原理是在polls.urls模块里查找指定的URL的定义。你可以看到名为‘detail’的URL的准确定义：</p>
+<blockquote>
+<blockquote>
+</blockquote>
+<pre><code>...
+# the &#39;name&#39; value as called by the &#123;% url %&#125; template tag
+url(r&#39;^(?P&lt;question_id&gt;[0-9]+)/$&#39;, views.detail, name=&#39;detail&#39;),
+...
+如果你想把polls应用中detail视图的URL改成其它样子比如 polls/specifics/12/，就可以不必在该模板（或者多个模板）中修改它，只需要修改 polls/urls.py：
+...
+# added the word &#39;specifics&#39;
+url(r&#39;^specifics/(?P&lt;question_id&gt;[0-9]+)/$&#39;, views.detail, name=&#39;detail&#39;),
+...
+</code></pre>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://getone.run/2017/02/16/Django/" title="Django" target="_blank" rel="external">http://getone.run/2017/02/16/Django/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/lqmeta" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/web_others/hexo-docs/images/my/head-sculpture/WechatIMG67.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/lqmeta" target="_blank"><span class="text-dark">lqmeta</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/web_others/hexo-docs/2017/09/06/HTTP%E5%8D%8F%E8%AE%AE/" title="HTTP协议"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/web_others/hexo-docs/2016/06/06/Nginx/" title="Nginx"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">    <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/web_others/hexo-docs/images/my/pay/aliPay.jpeg" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/web_others/hexo-docs/images/my/pay/WechatIMG700.jpeg" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lqmeta" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2517096010" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/web_others/hexo-docs/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2024 lqmeta 保留所有权利。
+        
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/lqmeta" target="_blank"> cofess </a>base on <a href="https://github.com/lqmeta/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+        <div>
+            <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2020079004号-1</a>
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/web_others/hexo-docs/js/plugin.min.js"></script>
+
+
+<script src="/web_others/hexo-docs/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/web_others/hexo-docs/',
+        CONTENT_URL: '/web_others/hexo-docs/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/web_others/hexo-docs/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+</body>
+</html>

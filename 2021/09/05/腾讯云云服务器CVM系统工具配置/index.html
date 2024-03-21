@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>腾讯云云服务器CVM系统工具配置 | 学习技术分享</title>
+  <meta name="description" content="概述腾讯云云服务器产品文档 腾讯云云服务器（Cloud Virtual Machine，CVM）是腾讯云提供的可扩展的计算服务。使用云服务器 CVM 避免了使用传统服务器时需要预估资源用量及前期投入，帮助您在短时间内快速启动任意数量的云服务器并即时部署应用程序。云服务器 CVM 支持用户自定义一切资源：CPU、内存、硬盘、网络、安全等，并可以在需求发生变化时轻松地调整它们。 重装 CentOS 系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="腾讯云云服务器CVM系统工具配置">
+<meta property="og:url" content="http://getone.run/2021/09/05/%E8%85%BE%E8%AE%AF%E4%BA%91%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8CVM%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="学习技术分享">
+<meta property="og:description" content="概述腾讯云云服务器产品文档 腾讯云云服务器（Cloud Virtual Machine，CVM）是腾讯云提供的可扩展的计算服务。使用云服务器 CVM 避免了使用传统服务器时需要预估资源用量及前期投入，帮助您在短时间内快速启动任意数量的云服务器并即时部署应用程序。云服务器 CVM 支持用户自定义一切资源：CPU、内存、硬盘、网络、安全等，并可以在需求发生变化时轻松地调整它们。 重装 CentOS 系">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WechatIMG717.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/012323.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/12312302.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/123123123.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WechatIMG718.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-232929.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-233015.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-233404.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-232453.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-233438.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-233544.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-234305.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-235055.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-235308.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-235855.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-000218.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WechatIMG719.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-000932.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-001754.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-002842.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-002822.png">
+<meta property="og:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-003605.png">
+<meta property="article:published_time" content="2021-09-05T14:53:13.000Z">
+<meta property="article:modified_time" content="2024-03-04T08:50:15.665Z">
+<meta property="article:author" content="lqmeta">
+<meta property="article:tag" content="环境安装">
+<meta property="article:tag" content="CentOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WechatIMG717.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://getone.run/2021/09/05/%E8%85%BE%E8%AE%AF%E4%BA%91%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8CVM%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="学习技术分享" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/web_others/hexo-docs/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/lqmeta" target="_blank">
+          <img class="img-circle img-rotate" src="/web_others/hexo-docs/images/my/head-sculpture/WechatIMG67.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">lqmeta</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/web_others/hexo-docs/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/web_others/hexo-docs/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/web_others/hexo-docs/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/web_others/hexo-docs/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/web_others/hexo-docs/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/web_others/hexo-docs/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lqmeta" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2517096010" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/web_others/hexo-docs/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Docker/">Docker</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Java/">Java</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Linux/">Linux</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Node-js/">Node.js</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Python/">Python</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Serverless/">Serverless</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/Tools/">Tools</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/web_others/hexo-docs/categories/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">软件工程</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/CentOS/" rel="tag">CentOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/Django/" rel="tag">Django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/editor/" rel="tag">editor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E5%AE%89%E8%A3%85%E5%8C%85/" rel="tag">安装包</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">环境安装</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" rel="tag">笔记</a><span class="tag-list-count">16</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" rel="tag">镜像</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/web_others/hexo-docs/tags/CentOS/" style="font-size: 13px;">CentOS</a> <a href="/web_others/hexo-docs/tags/Django/" style="font-size: 13px;">Django</a> <a href="/web_others/hexo-docs/tags/Hexo/" style="font-size: 13px;">Hexo</a> <a href="/web_others/hexo-docs/tags/editor/" style="font-size: 13px;">editor</a> <a href="/web_others/hexo-docs/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 13px;">协议</a> <a href="/web_others/hexo-docs/tags/%E5%AE%89%E8%A3%85%E5%8C%85/" style="font-size: 13px;">安装包</a> <a href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 13.5px;">环境安装</a> <a href="/web_others/hexo-docs/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 14px;">笔记</a> <a href="/web_others/hexo-docs/tags/%E7%BC%93%E5%AD%98/" style="font-size: 13px;">缓存</a> <a href="/web_others/hexo-docs/tags/%E9%95%9C%E5%83%8F/" style="font-size: 13px;">镜像</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2022/02/">February 2022</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/09/">September 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/06/">June 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/02/">February 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2021/01/">January 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/08/">August 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/07/">July 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2018/03/">March 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2017/02/">February 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2016/06/">June 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/web_others/hexo-docs/archives/2016/01/">January 2016</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/13/hexo%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99%E6%9C%8D%E5%8A%A1%E5%88%B6%E4%BD%9C%E6%88%90%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2/" class="title">hexo个人博客网站服务制作成镜像部署</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-13T07:16:40.000Z" itemprop="datePublished">2022-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/13/Docker-%E5%88%B6%E4%BD%9CNodejs%E9%95%9C%E5%83%8F/" class="title">Docker - 制作Nodejs镜像</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-13T03:01:07.000Z" itemprop="datePublished">2022-02-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/12/Docker-Compose%E5%AE%89%E8%A3%85/" class="title">Docker Compose安装</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-12T06:34:32.000Z" itemprop="datePublished">2022-02-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/web_others/hexo-docs/categories/Nginx/">Nginx</a>
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/12/%E5%88%B6%E4%BD%9C-Nginx-1-21-6-%E5%85%8D%E5%AE%89%E8%A3%85%E5%8C%85/" class="title">制作 Nginx-1.21.6 免安装包</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-12T05:58:31.000Z" itemprop="datePublished">2022-02-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/web_others/hexo-docs/2022/02/06/VS-Code-Remote-SSH%E9%85%8D%E7%BD%AE/" class="title">VS Code Remote SSH配置</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-05T17:43:30.000Z" itemprop="datePublished">2022-02-06</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%87%8D%E8%A3%85-CentOS-%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.</span> <span class="toc-text">重装 CentOS 系统</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BB%88%E7%AB%AF"><span class="toc-number">3.</span> <span class="toc-text">登录服务器终端</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SecureCRT-%E7%99%BB%E5%BD%95%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">SecureCRT 登录云服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E9%A1%B5%E7%99%BB%E5%BD%95"><span class="toc-number">3.2.</span> <span class="toc-text">网页登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SSH-%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="toc-number">3.3.</span> <span class="toc-text">SSH 免密登录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mac-%E6%9C%BA%E5%99%A8%E7%BB%88%E7%AB%AF%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E8%87%B3%E8%85%BE%E8%AE%AF%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">3.3.1.</span> <span class="toc-text">mac 机器终端免密登录至腾讯云服务器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7coder"><span class="toc-number">4.</span> <span class="toc-text">添加普通用户coder</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh-%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="toc-number">4.1.</span> <span class="toc-text">ssh 免密登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#coder-%E7%94%A8%E6%88%B7%E4%BD%BF%E7%94%A8-sudo"><span class="toc-number">4.2.</span> <span class="toc-text">coder 用户使用 sudo</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80-%E5%B0%86%E4%B8%80%E8%88%AC%E7%94%A8%E6%88%B7coder%E5%8A%A0%E5%9C%A8%E7%AE%A1%E7%90%86%E5%91%98%E7%BB%84wheel%E7%BB%84%E4%B8%AD"><span class="toc-number">4.2.1.</span> <span class="toc-text">方法一:将一般用户coder加在管理员组wheel组中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C-%E4%BF%AE%E6%94%B9-etc-sudoers%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AEcoder%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90"><span class="toc-number">4.2.2.</span> <span class="toc-text">方法二:修改&#x2F;etc&#x2F;sudoers文件设置coder用户权限</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%AE%89%E8%A3%85"><span class="toc-number">5.</span> <span class="toc-text">应用程序安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-nodejs"><span class="toc-number">5.1.</span> <span class="toc-text">安装 nodejs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-Docker"><span class="toc-number">5.2.</span> <span class="toc-text">安装 Docker</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VS-Code-Remote-SSH%E9%85%8D%E7%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">VS Code Remote SSH配置</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-腾讯云云服务器CVM系统工具配置" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      腾讯云云服务器CVM系统工具配置
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/web_others/hexo-docs/2021/09/05/%E8%85%BE%E8%AE%AF%E4%BA%91%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8CVM%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/" class="article-date">
+	  <time datetime="2021-09-05T14:53:13.000Z" itemprop="datePublished">2021-09-05</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/web_others/hexo-docs/categories/Linux/">Linux</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/web_others/hexo-docs/tags/CentOS/" rel="tag">CentOS</a>, <a class="article-tag-link-link" href="/web_others/hexo-docs/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">环境安装</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/web_others/hexo-docs/2021/09/05/%E8%85%BE%E8%AE%AF%E4%BA%91%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8CVM%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/cvm">腾讯云云服务器产品文档</a></p>
+<p>腾讯云云服务器（Cloud Virtual Machine，CVM）是腾讯云提供的可扩展的计算服务。使用云服务器 CVM 避免了使用传统服务器时需要预估资源用量及前期投入，帮助您在短时间内快速启动任意数量的云服务器并即时部署应用程序。<br>云服务器 CVM 支持用户自定义一切资源：CPU、内存、硬盘、网络、安全等，并可以在需求发生变化时轻松地调整它们。</p>
+<h1 id="重装-CentOS-系统"><a href="#重装-CentOS-系统" class="headerlink" title="重装 CentOS 系统"></a>重装 CentOS 系统</h1><p><a target="_blank" rel="noopener" href="https://console.cloud.tencent.com/cvm/instance/index">云服务器控制台</a></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WechatIMG717.png" alt="重装系统"><br><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/012323.png"><br>本示例中安装的是 <code>CentOS 7.9 64位</code> Linux 系统:<br><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/12312302.png" alt="CentOS 7.9 64位"><br><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/123123123.png"></p>
+<h1 id="登录服务器终端"><a href="#登录服务器终端" class="headerlink" title="登录服务器终端"></a>登录服务器终端</h1><h2 id="SecureCRT-登录云服务器"><a href="#SecureCRT-登录云服务器" class="headerlink" title="SecureCRT 登录云服务器"></a>SecureCRT 登录云服务器</h2><p><a target="_blank" rel="noopener" href="https://www.vandyke.com/products/securecrt/">SecureCRT</a></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WechatIMG718.png"></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-232929.png"></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-233015.png"></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-233404.png"></p>
+<h2 id="网页登录"><a href="#网页登录" class="headerlink" title="网页登录"></a>网页登录</h2><p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-232453.png" alt="网页登录"></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-233438.png"><br><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-233544.png"></p>
+<h2 id="SSH-免密登录"><a href="#SSH-免密登录" class="headerlink" title="SSH 免密登录"></a>SSH 免密登录</h2><p>为云服务器机器(root用户)生成公私钥:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;94xxxxxx87@qq.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-234305.png"></p>
+<h3 id="mac-机器终端免密登录至腾讯云服务器"><a href="#mac-机器终端免密登录至腾讯云服务器" class="headerlink" title="mac 机器终端免密登录至腾讯云服务器"></a>mac 机器终端免密登录至腾讯云服务器</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ssh-copy-id 将 mac本机的公钥复制到腾讯云服务器机器的`authorized_keys`文件中</span></span><br><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub root@49.234.217.26</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-235055.png"></p>
+<p>此时在终端中查看 <code>~/.ssh/authorized_keys</code> 文件中已经存在 mac本机的公钥了。</p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-235308.png"></p>
+<p>至此，可以通过 <code>ssh &#39;root@49.234.217.26&#39;</code> 指令，在 mac本机终端远程登录腾讯云云服务器。</p>
+<h1 id="添加普通用户coder"><a href="#添加普通用户coder" class="headerlink" title="添加普通用户coder"></a>添加普通用户coder</h1><p>注意一般我们不适用 root 去进行开发，这里我们新建用户 coder 并配置 ssh 免密登录:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加用户 coder</span></span><br><span class="line">useradd coder</span><br><span class="line"><span class="comment"># 设置 coder 密码</span></span><br><span class="line">passwd coder</span><br><span class="line"><span class="comment"># 切换到 coder 用户</span></span><br><span class="line">su coder</span><br><span class="line"><span class="comment"># 显示用户信息</span></span><br><span class="line">/usr/bin/id</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220205-235855.png"></p>
+<h2 id="ssh-免密登录"><a href="#ssh-免密登录" class="headerlink" title="ssh 免密登录"></a>ssh 免密登录</h2><p>为 coder 用户生成公私钥:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;luxxxxxxxxng@qq.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-000218.png"></p>
+<p>ssh-copy-id 将 mac本机的公钥复制到腾讯云服务器机器的<code>authorized_keys</code>文件中，并通过 <code>ssh &#39;coder@49.234.217.26&#39;</code> 指令以 coder 用户登录腾讯云云服务器:</p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WechatIMG719.png"></p>
+<h2 id="coder-用户使用-sudo"><a href="#coder-用户使用-sudo" class="headerlink" title="coder 用户使用 sudo"></a>coder 用户使用 sudo</h2><p>默认新建的 coder 用户是不可以使用 sudo 指令的。（coder is not in the sudoers file.  This incident will be reported.）</p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-000932.png"></p>
+<h3 id="方法一-将一般用户coder加在管理员组wheel组中"><a href="#方法一-将一般用户coder加在管理员组wheel组中" class="headerlink" title="方法一:将一般用户coder加在管理员组wheel组中"></a>方法一:将一般用户coder加在管理员组wheel组中</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需要 root 用户登录执行</span></span><br><span class="line"><span class="comment"># 将 coder 用户添加至管理员组wheel组中</span></span><br><span class="line">usermod -G wheel coder</span><br><span class="line"><span class="comment"># 更新wheel用户组</span></span><br><span class="line">newgrp wheel</span><br><span class="line"><span class="comment"># 查询wheel用户组的所有用户</span></span><br><span class="line">groupmems -g wheel -l</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 切换 coder 用户</span></span><br><span class="line">su coder</span><br><span class="line"><span class="comment"># 使用 sudo 执行 yum update 更新</span></span><br><span class="line">sudo yum update</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-001754.png"></p>
+<h3 id="方法二-修改-etc-sudoers文件设置coder用户权限"><a href="#方法二-修改-etc-sudoers文件设置coder用户权限" class="headerlink" title="方法二:修改/etc/sudoers文件设置coder用户权限"></a>方法二:修改<code>/etc/sudoers</code>文件设置coder用户权限</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 改变文件sudoers的权限为可写</span></span><br><span class="line"><span class="built_in">chmod</span> 740 /etc/sudoers</span><br><span class="line">vim /etc/sudoers</span><br><span class="line"><span class="comment"># 添加 `coder ALL=(ALL) NOPASSWD:ALL` (在使用sudo时不需要输入密码)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存退出后，把sudoers的权限改为默认的440</span></span><br><span class="line"><span class="built_in">chmod</span> 440 /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-002842.png"></p>
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-002822.png"></p>
+<h1 id="应用程序安装"><a href="#应用程序安装" class="headerlink" title="应用程序安装"></a>应用程序安装</h1><p>查看云服务器系统磁盘使用情况统计:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -hl</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://my-data-1253513412.cos.ap-guangzhou.myqcloud.com/docs/2021/0905/WX20220206-003605.png"></p>
+<p>我们选择在 <code>/dev/vda1</code> 磁盘 /home/coder 目录下进行安装。</p>
+<h2 id="安装-nodejs"><a href="#安装-nodejs" class="headerlink" title="安装 nodejs"></a>安装 nodejs</h2><a href="/web_others/hexo-docs/2021/09/06/Node-js%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" title="Node.js环境安装">Node.js环境安装</a>
+
+
+<h2 id="安装-Docker"><a href="#安装-Docker" class="headerlink" title="安装 Docker"></a>安装 Docker</h2><a href="/web_others/hexo-docs/2021/10/16/Docker%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" title="Docker环境安装">Docker环境安装</a>
+
+
+<h1 id="VS-Code-Remote-SSH配置"><a href="#VS-Code-Remote-SSH配置" class="headerlink" title="VS Code Remote SSH配置"></a>VS Code Remote SSH配置</h1><a href="/web_others/hexo-docs/2022/02/06/VS-Code-Remote-SSH%E9%85%8D%E7%BD%AE/" title="VS Code Remote SSH配置">VS Code Remote SSH配置</a>
+
+
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://getone.run/2021/09/05/%E8%85%BE%E8%AE%AF%E4%BA%91%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8CVM%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE/" title="腾讯云云服务器CVM系统工具配置" target="_blank" rel="external">http://getone.run/2021/09/05/腾讯云云服务器CVM系统工具配置/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/lqmeta" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/web_others/hexo-docs/images/my/head-sculpture/WechatIMG67.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/lqmeta" target="_blank"><span class="text-dark">lqmeta</span><small class="ml-1x">Web Developer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/web_others/hexo-docs/2021/09/06/Node-js%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" title="Node.js环境安装"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/web_others/hexo-docs/2021/06/15/Web-Worker/" title="Web Worker"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">    <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/web_others/hexo-docs/images/my/pay/aliPay.jpeg" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/web_others/hexo-docs/images/my/pay/WechatIMG700.jpeg" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lqmeta" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://weibo.com/u/2517096010" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/web_others/hexo-docs/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2024 lqmeta 保留所有权利。
+        
+        <!-- <div class="publishby">
+        	Theme by <a href="https://github.com/lqmeta" target="_blank"> cofess </a>base on <a href="https://github.com/lqmeta/hexo-theme-pure" target="_blank">pure</a>.
+        </div> -->
+        <div>
+            <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2020079004号-1</a>
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/web_others/hexo-docs/js/plugin.min.js"></script>
+
+
+<script src="/web_others/hexo-docs/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/web_others/hexo-docs/',
+        CONTENT_URL: '/web_others/hexo-docs/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/web_others/hexo-docs/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+</body>
+</html>
