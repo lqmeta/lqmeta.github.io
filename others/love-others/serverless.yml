@@ -1,0 +1,31 @@
+
+# serverless.yml
+
+org: love # (可选) 用于记录组织信息，默认值为您的腾讯云账户 APPID
+app: websiteApp # (可选) 该 website 应用名称
+
+component: website # (必填) 引用 component 的名称，当前用到的是 tencent-website 组件
+stage: dev # (可选) 用于区分环境信息，默认值是 dev
+
+name: love # (必填) 该 website 组件创建的实例名称
+
+inputs:
+  src:
+    src: ./
+    index: index.html
+    # dist: ./public
+    # hook: npm run deploy
+    # websitePath: ./
+    exclude:
+      - 副本/**
+      - README.md
+      - .env
+      - "node_modules/**"
+      - 'scripts/**'
+      - 'webpack/**'
+  region: ap-shenzhen-fsi
+  description: ${name}
+  bucketName: ${name}
+  # protocol:
+  #   - https
+  #   - http
