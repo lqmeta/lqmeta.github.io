@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="en" >
+<head>
+<meta charset="UTF-8">
+<title>Holiday Love</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<body>
+  <div class="content">
+    <div class="text-box">
+      <div class="css-jump css-jump-left">  
+        <span>今</span>  
+        <span>天</span>  
+        <span>累</span>
+        <span>啦</span>
+      </div>
+      <div class="css-jump css-jump-right">
+        <span>亲</span>  
+        <span>一</span>  
+        <span>小</span>  
+        <span>口</span>  
+      </div>
+    </div>
+    <div class="container">
+      <div class="tree-layer">
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+      </div>  
+      <div class="tree-layer">
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+      </div>
+      <div class="tree-layer">
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+      </div>
+      <div class="tree-layer">
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+      </div>
+      <div class="tree-layer">
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+      </div>
+      <div class="tree-layer">
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+      </div>
+      <div class="base"></div>
+      <div class="ornaments">
+        <div class="ornament-box">
+          <div class="string"></div>
+          <div class="ornament">
+            <div class="face">
+              <div class="eyes"></div>
+              <div class="shy-eyes"></div>
+              <div class="smile"></div>
+            </div>
+          </div>
+        </div>
+        <div class="ornament-box">
+          <div class="string"></div>
+          <div class="ornament">
+            <div class="face">
+              <div class="eyes"></div>
+              <div class="lovey-dovey-eyes"></div>
+              <div class="blush"></div>
+              <div class="smile"></div>
+              <div class="kiss">
+                <div class="lip"></div>
+                <div class="lip"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lights dip">
+        <div class="cord">
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+        </div>
+      </div>
+      <div class="lights-2 dip">
+        <div class="cord">
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+        </div>
+      </div>
+      <div class="lights-3">
+        <div class="cord">
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+          <div class="light"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <audio id="audio1" autoplay="true" style="display: none;" controls preload loop="loop">
+    <source src="./../music/weinidongwoxin.mp3">
+  </audio>
+  <script>
+    let startTime = 0, endTime = 0, clientY = 0, clientX = 0;
+    function touchStartEvent (e) {
+      clientX = e.changedTouches[0].clientX;
+      clientY = e.changedTouches[0].clientY;
+      startTime = Date.now();
+    };
+    function touchEndEvent (e) {
+      let audio = document.getElementById('audio1');
+      let clientYEnd = 0, clientXEnd = 0;
+      endTime = Date.now();
+      clientXEnd = e.changedTouches[0].clientX;
+      clientYEnd = e.changedTouches[0].clientY;
+      if(endTime-startTime<200&&Math.abs(clientYEnd-clientY)<15&&Math.abs(clientXEnd-clientX)<15) {
+        if(audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      }
+    };
+    function autoPlay() {
+        wx.config({
+            debug: false,
+            appId: '',
+            timestamp: 1,
+            nonceStr: '',
+            signature: '',
+            jsApiList: []
+        });
+        wx.ready(function(){
+          let audio = document.getElementById('audio1');
+          window.addEventListener('touchstart',touchStartEvent,true);   
+          window.addEventListener('touchend',touchEndEvent,true); 
+          audio.play();
+        });
+    }
+    try {
+      autoPlay();  
+    } catch(err) {
+      console.error(err);
+    }
+  </script>
+</body>
+</html>

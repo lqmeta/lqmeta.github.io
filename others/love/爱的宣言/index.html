@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>爱的宣言</title>
+
+<link href="css/default.css" type="text/css" rel="stylesheet">
+<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="js/garden.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+
+</head>
+
+<body>
+
+<div id="mainDiv">
+	<div id="code">
+		<br/>
+		<span class="comments">/**</span><br/>
+		<span class="space"/><span class="comments">*2020—02-14</span><br />
+		<span class="space"/><span class="comments">**/</span><br />
+		Boy name = <span class="keyword">李先生</span> <br />
+		Girl name = <span class="keyword">张小姐</span><br /><br />
+		<span class="comments">// Fall in love river. </span><br />
+		<span class="keyword">你</span>是我今生渡不过的劫，<br /><br />
+		<span class="comments">// They love each other.</span><br />
+		多看一眼就心软，拥抱一下就沦陷。<br /><br />
+		<span class="comments">// AS time goes on.</span><br />
+		<span>细水长流是<span class="keyword">你</span>，柴米油盐是<span class="keyword">你</span>，<br /><br />
+		<span class="comments">// At the same time.</span><br />
+		情深是<span class="keyword">你</span>，白首也是<span class="keyword">你</span>。</span><br /><br />
+		<span class="comments">// Both wind and snow all over the sky.</span><br />
+		<span class="comments">// Whether on foot or 5 kilometers.</span><br />
+		不管风雨，不管咫尺还是天涯<br /><br />
+		<span class="comments">//The boy has but one dream;</span><br />
+		将我献给<span class="keyword">你</span>，连同深深的喜欢，换你<span class="keyword">一生</span>够不够，<br />
+		不够的话<span class="keyword">下辈子</span>也给<span class="keyword">你</span>！<br />
+		<br>
+	</div>
+	<div id="content">
+		<div id="loveHeart">
+			<canvas id="garden"></canvas>
+			<div id="words">
+				<div id="messages">
+					亲爱的，这是我们相爱在一起的时光。
+					<div id="elapseClock"></div>
+				</div>
+				<div id="loveu">
+					爱你直到永永远远。<br/>
+					<div class="signature">- 李先生</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<audio id="audio1" autoplay="true" style="display: none;" controls preload loop="loop">
+	<source src="./../jaychou.mp3">
+</audio>
+<script type="text/javascript">
+var offsetX = $("#loveHeart").width() / 2;
+var offsetY = $("#loveHeart").height() / 2 - 55;
+var together = new Date();
+together.setFullYear(2019, 5, 19);
+together.setHours(20);
+together.setMinutes(0);
+together.setSeconds(0);
+together.setMilliseconds(0);
+
+if (!document.createElement('canvas').getContext) {
+	var msg = document.createElement("div");
+	msg.id = "errorMsg";
+	msg.innerHTML = "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+"; 
+	document.body.appendChild(msg);
+	$("#code").css("display", "none")
+	$("#copyright").css("position", "absolute");
+	$("#copyright").css("bottom", "10px");
+	document.execCommand("stop");
+} else {
+	setTimeout(function () {
+		startHeartAnimation();
+	}, 5000);
+
+	timeElapse(together);
+	setInterval(function () {
+		timeElapse(together);
+	}, 500);
+
+	adjustCodePosition();
+	$("#code").typewriter();
+}
+</script>
+<script>
+	let startTime = 0, endTime = 0, clientY = 0, clientX = 0;
+	function touchStartEvent (e) {
+	  clientX = e.changedTouches[0].clientX;
+	  clientY = e.changedTouches[0].clientY;
+	  startTime = Date.now();
+	};
+	function touchEndEvent (e) {
+	  let audio = document.getElementById('audio1');
+	  let clientYEnd = 0, clientXEnd = 0;
+	  endTime = Date.now();
+	  clientXEnd = e.changedTouches[0].clientX;
+	  clientYEnd = e.changedTouches[0].clientY;
+	  if(endTime-startTime<200&&Math.abs(clientYEnd-clientY)<70&&Math.abs(clientXEnd-clientX)<70) {
+		if(audio.paused) {
+		  audio.play();
+		} else {
+		  audio.pause();
+		}
+	  }
+	};
+	function autoPlay() {
+		wx.config({
+			debug: false,
+			appId: '',
+			timestamp: 1,
+			nonceStr: '',
+			signature: '',
+			jsApiList: []
+		});
+		wx.ready(function(){
+		  var audio = document.getElementById('audio1');
+		  window.addEventListener('touchstart',touchStartEvent,true);   
+		  window.addEventListener('touchend',touchEndEvent,true);
+		  audio.play();
+		});
+	}
+	try {
+	  autoPlay();
+	} catch(err) {
+	  console.error(err);
+	}
+	</script>
+</body>
+</html>

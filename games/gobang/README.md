@@ -1,6 +1,8 @@
 # 云开发·H5项目五子棋
 
 
+https://lqmeta.github.io/games/gobang/index.html
+
 
 项目介绍：
 
