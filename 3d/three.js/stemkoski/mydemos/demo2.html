@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- http://9.135.228.146/3d-threejs/stemkoski.github.com/mydemos/demo2.html -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Three.js - 点击选中虚线2D方块</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://threejs.org/examples/jsm/lines/Line.js"></script>
+    <script type="module" src="https://threejs.org/examples/jsm/lines/LineSegments2.js"></script>
+    <script type="module" src="https://threejs.org/examples/jsm/lines/LineSegmentsGeometry.js"></script>
+    <script type="module" src="https://threejs.org/examples/jsm/lines/LineMaterial.js"></script>
+    <script>
+        // 创建场景
+        var scene = new THREE.Scene();
+
+        // 创建相机
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        // 创建渲染器
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // 创建一个矩形的顶点
+        var vertices = [
+            new THREE.Vector3(-1, -1, 0),
+            new THREE.Vector3(1, -1, 0),
+            new THREE.Vector3(1, 1, 0),
+            new THREE.Vector3(-1, 1, 0),
+            new THREE.Vector3(-1, -1, 0)
+        ];
+
+        // 创建一个新的几何体并添加顶点
+        var geometry = new THREE.LineSegmentsGeometry().setPositions(vertices);
+
+        // 创建一个新的虚线材料
+        var material = new THREE.LineMaterial({
+            color: 0xffffff,
+            linewidth: 1,
+            dashed: true,
+            dashScale: 10,
+            dashSize: 1,
+            gapSize: 1,
+        });
+
+        // 创建一个新的线段对象
+        var line = new THREE.LineSegments2(geometry, material);
+
+        // 将线段添加到场景中
+        scene.add(line);
+
+        // 创建射线投射器
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2();
+
+        // 监听鼠标点击事件
+        window.addEventListener('click', onDocumentMouseClick, false);
+
+        function onDocumentMouseClick(event) {
+            event.preventDefault();
+
+            // 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+            // 通过摄像机和鼠标位置更新射线投射器
+            raycaster.setFromCamera(mouse, camera);
+
+            // 计算物体和射线的焦点
+            var intersects = raycaster.intersectObjects(scene.children);
+
+            if (intersects.length > 0) {
+                console.log('选中了对象', intersects[0]);
+            }
+        }
+
+        // 渲染循环
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
