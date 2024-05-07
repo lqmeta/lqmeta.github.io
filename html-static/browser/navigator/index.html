@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- html-static/browser/navigator/index.html -->
+  <!-- http://9.135.228.146/html-static/browser/navigator/index.html -->
+  <!-- https://getone.run/static-page/admin-front-html/demo/osInfo/index.html -->
+  <!-- https://lqmeta.github.io/html-static/browser/navigator/index.html -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>浏览器信息</title>
+  <style>
+    .title{
+      font-size: 23px;
+      font-weight: bold;
+    }
+  </style>
+  <script src="https://my-demo-web-html-1253513412.cos-website.ap-guangzhou.myqcloud.com/demo/vconsole.min.js"></script>
+</head>
+<body>
+  <!-- userAgent -->
+  <h1>navigator.userAgent</h1>
+  <div id="osInfo"></div>
+  <br />
+  <!-- appVersion -->
+  <h1>navigator.appVersion</h1>
+  <div id="appVersionId"></div>
+  <br />
+  <!-- 企业微信 -->
+  是否在企业微信环境中:
+  <div id="wxworkId"></div>
+  <!-- isZwwxInWxwork -->
+  企业微信私有化: 政务微信 app
+  <div id="wxworkZwwxId"></div>
+  <br />
+  <!-- appName -->
+  <h1>navigator.appName</h1>
+  <div id="appNameId"></div>
+  <br />
+  <!-- isMobile -->
+  <div class="title">isMobile:</div>
+  <div id="isMobileID"></div>
+</body>
+  <script>
+    function isMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+    function isWxworkLocal() {
+      return navigator.userAgent.toLowerCase().indexOf('wxworklocal') !== -1;
+    }
+    function isWxwork() {
+      return navigator.userAgent.toLowerCase().indexOf('wxwork') !== -1;
+    }
+    function isZwwxInWxwork() {
+      if (
+        isWxwork()
+        && isWxworkLocal()
+        && navigator.userAgent.toLowerCase().indexOf('appname/zwwx') !== -1
+      ) {
+        return true;
+      }
+
+      return false;
+    }
+
+    document.getElementById('osInfo').innerHTML = navigator.userAgent;
+    document.getElementById('appVersionId').innerHTML = navigator.appVersion;
+    document.getElementById('wxworkId').innerHTML = isWxwork();
+    document.getElementById('wxworkZwwxId').innerHTML = isZwwxInWxwork();
+    document.getElementById('appNameId').innerHTML = navigator.appName;
+
+    document.getElementById('isMobileID').innerHTML = isMobile();
+  </script>
+</html>
