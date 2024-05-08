@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <!-- html-static/browser/navigator/index.html -->
   <!-- http://9.135.228.146/html-static/browser/navigator/index.html -->
   <!-- https://getone.run/static-page/admin-front-html/demo/osInfo/index.html -->
   <!-- https://lqmeta.github.io/html-static/browser/navigator/index.html -->
+  <!-- http://49.51.98.176/html-static/browser/navigator/index.html -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,6 +27,10 @@
   <!-- appVersion -->
   <h1>navigator.appVersion</h1>
   <div id="appVersionId"></div>
+  <br />
+  <!-- document.cookie -->
+  <h1>document.cookie</h1>
+  <div id="documentCookie"></div>
   <br />
   <!-- 企业微信 -->
   是否在企业微信环境中:
@@ -65,6 +71,7 @@
 
     document.getElementById('osInfo').innerHTML = navigator.userAgent;
     document.getElementById('appVersionId').innerHTML = navigator.appVersion;
+    document.getElementById('documentCookie').innerHTML = document.cookie;
     document.getElementById('wxworkId').innerHTML = isWxwork();
     document.getElementById('wxworkZwwxId').innerHTML = isZwwxInWxwork();
     document.getElementById('appNameId').innerHTML = navigator.appName;
