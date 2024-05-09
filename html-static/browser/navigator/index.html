@@ -78,4 +78,30 @@
 
     document.getElementById('isMobileID').innerHTML = isMobile();
   </script>
+
+  <script>
+    if (navigator.userAgentData) {
+      // 获取高级信息需要异步请求
+      navigator.userAgentData.getHighEntropyValues([
+        "platform",
+        "platformVersion",
+        "architecture",
+        "model",
+        "uaFullVersion"
+      ]).then(ua => {
+        console.log(ua.platform); // 操作系统平台
+        console.log(ua.platformVersion); // 操作系统版本
+        console.log(ua.architecture); // CPU 架构
+        console.log(ua.model); // 设备型号
+        console.log(ua.uaFullVersion); // 浏览器完整版本号
+      });
+
+      // 获取基本信息
+      console.log(navigator.userAgentData.brands); // 浏览器品牌和版本
+      console.log(navigator.userAgentData.mobile); // 是否为移动设备
+    } else {
+      // 如果不支持 UA-CH，回退到传统的 userAgent 字符串
+      console.log(navigator.userAgent);
+    }
+  </script>
 </html>
