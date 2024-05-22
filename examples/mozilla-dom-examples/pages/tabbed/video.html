@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <!-- https://interactive-examples.mdn.mozilla.net/pages/tabbed/video.html -->
-<!-- https://lqmeta.github.io/examples/mozilla-dom-examples/pages/tabbed/video.html -->
+
+<!-- [GitHub]: https://lqmeta.github.io/examples/mozilla-dom-examples/pages/tabbed/video.html -->
+<!-- [DevCloud]: http://9.135.228.146/examples/mozilla-dom-examples/pages/tabbed/video.html -->
+<!-- [toronto]: http://49.51.98.176/examples/mozilla-dom-examples/pages/tabbed/video.html -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -121,12 +124,13 @@
 
 
     video.addEventListener('progress', function() {
-      console.log('[progress] ');
+      console.log('[progress]:', video.buffered, video.duration);
 
       var buffered = video.buffered;
       if (buffered.length) {
         var loaded = buffered.end(buffered.length - 1);
         var total = video.duration;
+
         var percentage = (loaded / total) * 100;
         console.log('Buffering: ' + percentage.toFixed(2) + '%');
       }
