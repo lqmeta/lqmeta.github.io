@@ -122,8 +122,10 @@
       console.log("[waiting] Video is waiting for more data.");
     });
 
-
     video.addEventListener('progress', function() {
+      /**
+       * javascript中使用video实现视频的缓冲，加载与下载，获取视频的时长
+       */
       console.log('[progress]:', video.buffered, video.duration);
 
       var buffered = video.buffered;
