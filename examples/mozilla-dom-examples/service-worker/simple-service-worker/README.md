@@ -14,3 +14,26 @@ To get this code running locally on your computer as-is, you need to do the foll
 2. Clone the repo in a location on your machine.
 3. Start a local server in the root of this directory using [`lite-server`](https://www.npmjs.com/package/lite-server). `npx lite-server .`
 4. When the server starts, the `index.html`` page will open in your default browser.
+
+
+
+
+
+![](images/2024-06-12-16-20-55.png)
+
+
+
+# cos
+
+https://web.getone.run/examples/mozilla-dom-examples/service-worker/simple-service-worker/index.html
+
+![](images/2024-06-12-16-22-58.png)
+
+
+
+
+
+
+
+
+
