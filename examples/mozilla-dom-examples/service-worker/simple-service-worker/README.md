@@ -25,7 +25,7 @@ To get this code running locally on your computer as-is, you need to do the foll
 
 # cos
 
-https://web.getone.run/examples/mozilla-dom-examples/service-worker/simple-service-worker/index.html
+https://website.getone.run/examples/mozilla-dom-examples/service-worker/simple-service-worker/index.html
 
 ![](images/2024-06-12-16-22-58.png)
 
